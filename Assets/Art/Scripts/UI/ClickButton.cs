@@ -34,4 +34,10 @@ public class ClickButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         SceneManager.LoadScene("Game");
     }
 
+    public void quitGame()
+    {
+        Debug.Log("Quit game!");
+        Application.Quit();
+    }
+
 }
