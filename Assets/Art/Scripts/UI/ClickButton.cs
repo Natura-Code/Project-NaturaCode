@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 
 public class ClickButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
@@ -26,6 +27,11 @@ public class ClickButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public void iWasClicked()
     {
         Debug.Log("Button was clicked!");
+    }
+
+    public void playGame()
+    {
+        SceneManager.LoadScene("Game");
     }
 
 }
