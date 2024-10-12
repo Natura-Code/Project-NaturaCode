@@ -439,6 +439,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nameText: {fileID: 1692093715}
   dialogueText: {fileID: 1638363714}
+  animator: {fileID: 1431199050}
 --- !u!1 &429282121
 GameObject:
   m_ObjectHideFlags: 0

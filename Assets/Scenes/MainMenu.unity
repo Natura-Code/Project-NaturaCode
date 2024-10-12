@@ -651,10 +651,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Ocean guardian
+  m_text: Ocean Guardian
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 49508cac4f07a404582e0723e832c30f, type: 2}
-  m_sharedMaterial: {fileID: 6505990941538902236, guid: 49508cac4f07a404582e0723e832c30f, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c2accd20c69f62148a97046e96094bc4, type: 2}
+  m_sharedMaterial: {fileID: -1093851435375348681, guid: c2accd20c69f62148a97046e96094bc4, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
