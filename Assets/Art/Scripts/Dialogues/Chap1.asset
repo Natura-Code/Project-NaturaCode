@@ -16,6 +16,6 @@ MonoBehaviour:
   dialogueText: Halo There! My name is Siti are you hunggry?
   choices:
   - choiceText: Yes Can i got Food
-    nextDialogue: {fileID: 0}
+    nextDialogueID: 1
   - choiceText: No Go Out here
-    nextDialogue: {fileID: 0}
+    nextDialogueID: 0

@@ -12,6 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87f4a52aa159d2d41a041506f3efaa4c, type: 3}
   m_Name: 1
   m_EditorClassIdentifier: 
-  characterName: 
-  dialogueText: 
-  choices: []
+  characterName: Siti
+  dialogueText: Oke ill give you some food and i need you to help me
+  choices:
+  - choiceText: ill help you
+    nextDialogueID: 2
+  - choiceText: No
+    nextDialogueID: 3
