@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-
+using UnityEngine.SceneManagement;
 public class DialogueManager : MonoBehaviour
 {
     public static DialogueManager Instance { get; private set; }
@@ -58,16 +58,25 @@ public class DialogueManager : MonoBehaviour
     }
 
     // Handles response selection and triggers next dialogue node
+
     public void SelectResponse(DialogueResponse response, string title)
     {
-        // Check if there's a follow-up node
+        // Jika respons memicu perpindahan scene
+        if (response.triggersSceneChange)
+        {
+            // Pindah ke scene yang telah ditentukan di Dialogue Asset
+            SceneManager.LoadScene(response.sceneToLoad);
+            return;
+        }
+
+        // Jika tidak ada node berikutnya, akhiri dialog
         if (!response.nextNode.IsLastNode())
         {
-            StartDialogue(title, response.nextNode); // Start next dialogue
+            StartDialogue(title, response.nextNode); // Mulai dialog berikutnya
         }
         else
         {
-            // If no follow-up node, end the dialogue
+            // Akhiri dialog jika tidak ada node lanjutan
             HideDialogue();
         }
     }

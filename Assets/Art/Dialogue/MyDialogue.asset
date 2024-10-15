@@ -23,15 +23,49 @@ MonoBehaviour:
           nextNode:
             dialogueText: 
             responses: []
+          triggersSceneChange: 0
+          sceneToLoad: 
+      triggersSceneChange: 0
+      sceneToLoad: 
     - responseText: Apa yang bisa saya lakukan di sini?
       nextNode:
         dialogueText: Ada banyak petualangan yang menunggu di hutan
         responses:
         - responseText: Bagaimana cara ke hutan?
           nextNode:
-            dialogueText: ya tinggal ke hutan lah pakai nanya
-            responses: []
+            dialogueText: Saya akan menuntun mu anak muda!
+            responses:
+            - responseText: Iya
+              nextNode:
+                dialogueText: Baiklah
+                responses:
+                - responseText: Close
+                  nextNode:
+                    dialogueText: 
+                    responses: []
+                  triggersSceneChange: 0
+                  sceneToLoad: 
+              triggersSceneChange: 1
+              sceneToLoad: MainMenu
+            - responseText: Tidak
+              nextNode:
+                dialogueText: Baiklah
+                responses:
+                - responseText: Close
+                  nextNode:
+                    dialogueText: 
+                    responses: []
+                  triggersSceneChange: 0
+                  sceneToLoad: 
+              triggersSceneChange: 0
+              sceneToLoad: MainMenu
+          triggersSceneChange: 0
+          sceneToLoad: 
         - responseText: Terima kasih!
           nextNode:
             dialogueText: 
             responses: []
+          triggersSceneChange: 0
+          sceneToLoad: 
+      triggersSceneChange: 0
+      sceneToLoad: 
