@@ -31,7 +31,7 @@ public class ClickButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public void playGame()
     {
-        SceneManager.LoadScene("Game");
+        SceneManager.LoadScene("InGame");
     }
 
     public void quitGame()
