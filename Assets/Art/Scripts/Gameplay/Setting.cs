@@ -5,8 +5,8 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 public class Setting : MonoBehaviour
 {
-    public GameObject settingMenuPanel;
-    public GameObject pilihanMenuPanel;
+    [SerializeField] private GameObject settingMenuPanel;
+    [SerializeField] private GameObject pilihanMenuPanel;
     [SerializeField] private GameObject storePanel;
     [SerializeField] private GameObject inventoryPanel;
 
@@ -16,13 +16,20 @@ public class Setting : MonoBehaviour
         pilihanMenuPanel.SetActive(false);
     }
 
-
     void Update()
     {
 
     }
 
-    
+    public void InGameButton(string scenename)
+    {
+        SceneManager.LoadScene(scenename);
+    }
+
+    public void InGame2Button(string scenename)
+    {
+        SceneManager.LoadScene(scenename);
+    }
 
     public void PilihanButton()
     {
@@ -35,7 +42,7 @@ public class Setting : MonoBehaviour
         settingMenuPanel.SetActive(true);
         pilihanMenuPanel.SetActive(false);
     }
-    
+
     public void StoreButton()
     {
         pilihanMenuPanel.SetActive(false);
@@ -46,5 +53,17 @@ public class Setting : MonoBehaviour
     {
         pilihanMenuPanel.SetActive(true);
         storePanel.SetActive(false);
+    }
+
+    public void InventoryButton()
+    {
+        pilihanMenuPanel.SetActive(false);
+        inventoryPanel.SetActive(true);
+    }
+
+    public void BackButtonInventory()
+    {
+        pilihanMenuPanel.SetActive(true);
+        inventoryPanel.SetActive(false);
     }
 }

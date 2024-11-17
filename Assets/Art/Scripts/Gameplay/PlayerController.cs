@@ -4,70 +4,67 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    // Kecepatan pergerakan dan lompatan
-    public float moveSpeed = 5f;
-    public float jumpForce = 10f;
+    [SerializeField] private float speed;
 
-    // Komponen untuk kontrol
-    private Rigidbody2D rb;
-    private Animator animator;
-    private SpriteRenderer spriteRenderer;
+    Vector3 movement;
 
-    // Ground Check
-    public Transform groundCheck;
-    public float groundCheckRadius = 0.2f;
-    public LayerMask groundLayer;
-    private bool isGrounded;
+    [SerializeField] private Animator anime;
 
-    // Arah pergerakan
-    private float horizontalMove;
-
-    void Start()
+    private void Start()
     {
-        // Inisialisasi komponen
-        rb = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        
     }
 
     void Update()
     {
-        // Mengambil input horizontal (A/D atau Panah Kiri/Kanan)
-        horizontalMove = Input.GetAxis("Horizontal");
+        movement.x = Input.GetAxisRaw("Horizontal");
+        movement.y = Input.GetAxisRaw("Vertical");
 
-        // Mengubah arah sprite sesuai pergerakan
-        if (horizontalMove < 0)
+        transform.position += movement * speed * Time.deltaTime;
+
+        if (movement.x != 0)
         {
-            spriteRenderer.flipX = true; // Balik ke kiri
+            anime.SetBool("Jalan", true);
+            anime.SetBool("JalanZ", false);
+            anime.SetBool("JalanY", false);
+
+            if (movement.x < 0)
+            {
+                transform.localScale = new Vector3(-1, 1, 1);
+            }
+            else if (movement.x > 0)
+            {
+                transform.localScale = new Vector3(1, 1, 1);
+            }
         }
-        else if (horizontalMove > 0)
+        else if (movement.y > 0)
         {
-            spriteRenderer.flipX = false; // Arah kanan
+            anime.SetBool("JalanZ", true);
+            anime.SetBool("JalanY", false);
+            anime.SetBool("Jalan", false);
         }
-
-        // Cek jika player berada di tanah
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
-
-        // Jika player berada di tanah dan menekan tombol lompat (space bar)
-        if (isGrounded && Input.GetButtonDown("Jump"))
+        else if (movement.y < 0)
         {
-            Jump();
+            if (movement.x == 0)
+            {
+                anime.SetBool("JalanY", true);
+                anime.SetBool("JalanZ", false);
+                anime.SetBool("Jalan", false);
+            }
+
+            else
+            {
+                anime.SetBool("Jalan", true);
+                anime.SetBool("JalanY", false);
+                anime.SetBool("JalanZ", false);
+            }
+        }
+        else
+        {
+            anime.SetBool("Jalan", false);
+            anime.SetBool("JalanY", false);
+            anime.SetBool("JalanZ", false);
         }
 
-        // Set parameter animasi
-        animator.SetFloat("Speed", Mathf.Abs(horizontalMove));
-        animator.SetBool("isGrounded", isGrounded);
-    }
-
-    void FixedUpdate()
-    {
-        // Mengatur kecepatan horizontal karakter
-        rb.velocity = new Vector2(horizontalMove * moveSpeed, rb.velocity.y);
-    }
-
-    void Jump()
-    {
-        // Memberikan gaya lompatan
-        rb.velocity = new Vector2(rb.velocity.x, jumpForce);
     }
 }
