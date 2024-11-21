@@ -13,6 +13,9 @@ public class FishAI : MonoBehaviour
     public float normalSpeed = 2f; // Kecepatan normal
     public float directionChangeInterval = 2f; // Interval pergantian arah acak
 
+    [Header("Boundary Settings")]
+    public BoxCollider2D boundaryCollider; // Collider pembatas
+
     private Vector2 targetDirection; // Arah gerak acak
     private Rigidbody2D rb; // Untuk menggerakkan objek dengan Rigidbody
     private Animator animator; // Referensi Animator
@@ -40,6 +43,9 @@ public class FishAI : MonoBehaviour
             animator.SetBool("isFleeing", false);
             MoveInRandomDirection();
         }
+
+        // Batasi pergerakan ikan
+        RestrictMovementWithinBoundary();
     }
 
     void FleeFromPlayer()
@@ -60,7 +66,6 @@ public class FishAI : MonoBehaviour
         UpdateFishDirection(targetDirection);
     }
 
-
     IEnumerator ChangeDirectionRoutine()
     {
         while (true)
@@ -75,12 +80,39 @@ public class FishAI : MonoBehaviour
         targetDirection = Random.insideUnitCircle.normalized;
     }
 
+    void RestrictMovementWithinBoundary()
+    {
+        if (boundaryCollider != null)
+        {
+            // Dapatkan batas collider
+            Bounds bounds = boundaryCollider.bounds;
+
+            // Ambil posisi saat ini
+            Vector3 currentPosition = transform.position;
+
+            // Batasi posisi ikan agar tetap dalam bounds
+            float clampedX = Mathf.Clamp(currentPosition.x, bounds.min.x, bounds.max.x);
+            float clampedY = Mathf.Clamp(currentPosition.y, bounds.min.y, bounds.max.y);
+
+            // Update posisi ikan jika keluar dari bounds
+            transform.position = new Vector3(clampedX, clampedY, currentPosition.z);
+        }
+    }
+
     void OnDrawGizmosSelected()
     {
         // Visualisasi radius menjauh
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, fleeRadius);
+
+        // Visualisasi boundary 
+        if (boundaryCollider != null)
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireCube(boundaryCollider.bounds.center, boundaryCollider.bounds.size);
+        }
     }
+
     void UpdateFishDirection(Vector2 movementDirection)
     {
         Vector3 currentScale = transform.localScale; // Ambil skala saat ini
@@ -96,5 +128,4 @@ public class FishAI : MonoBehaviour
             transform.localScale = new Vector3(-Mathf.Abs(currentScale.x), currentScale.y, currentScale.z);
         }
     }
-
 }
