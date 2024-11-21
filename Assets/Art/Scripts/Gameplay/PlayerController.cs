@@ -10,16 +10,28 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private Animator anime;
 
-    private void Start()
+    private void Update()
     {
+        movement = Vector3.zero;
+
+        if (Input.GetKey(KeyCode.W))
+        {
+            movement.y = 1; 
+        }
+        else if (Input.GetKey(KeyCode.S))
+        {
+            movement.y = -1; 
+        }
+        else if (Input.GetKey(KeyCode.A))
+        {
+            movement.x = -1; 
+        }
+        else if (Input.GetKey(KeyCode.D))
+        {
+            movement.x = 1; 
+        }
+
         
-    }
-
-    void Update()
-    {
-        movement.x = Input.GetAxisRaw("Horizontal");
-        movement.y = Input.GetAxisRaw("Vertical");
-
         transform.position += movement * speed * Time.deltaTime;
 
         if (movement.x != 0)
@@ -45,19 +57,9 @@ public class PlayerController : MonoBehaviour
         }
         else if (movement.y < 0)
         {
-            if (movement.x == 0)
-            {
-                anime.SetBool("JalanY", true);
-                anime.SetBool("JalanZ", false);
-                anime.SetBool("Jalan", false);
-            }
-
-            else
-            {
-                anime.SetBool("Jalan", true);
-                anime.SetBool("JalanY", false);
-                anime.SetBool("JalanZ", false);
-            }
+            anime.SetBool("JalanY", true);
+            anime.SetBool("JalanZ", false);
+            anime.SetBool("Jalan", false);
         }
         else
         {
@@ -65,6 +67,5 @@ public class PlayerController : MonoBehaviour
             anime.SetBool("JalanY", false);
             anime.SetBool("JalanZ", false);
         }
-
     }
 }

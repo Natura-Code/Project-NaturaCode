@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 660242799297175489}
   - component: {fileID: 5489541240011949065}
   - component: {fileID: 7663163459865776481}
-  - component: {fileID: 2651664498754028527}
+  - component: {fileID: 4077191794609033351}
   m_Layer: 0
   m_Name: Script Management
   m_TagString: Untagged
@@ -94,7 +94,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventoryUI: {fileID: 4152818195700363319, guid: 98ce3a401dbe92a478934b97d7cf3d76, type: 3}
---- !u!114 &2651664498754028527
+  settingMenuPanel: {fileID: 0}
+  pilihanMenuPanel: {fileID: 0}
+  inventoryPanel: {fileID: 0}
+  storePanel: {fileID: 0}
+  inventorySize: 14
+--- !u!114 &4077191794609033351
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -103,9 +108,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 6520212447239422588}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8940afbd64bbf2f4493f6c3c1e230a69, type: 3}
+  m_Script: {fileID: 11500000, guid: 81f5325686a4457478af586c8e425349, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pauseMenuUI: {fileID: 0}
-  pauseButton: {fileID: 0}
-  resumeButton: {fileID: 0}
+  settingMenuPanel: {fileID: 0}
+  pilihanMenuPanel: {fileID: 0}
+  storePanel: {fileID: 0}
+  inventoryPanel: {fileID: 0}
