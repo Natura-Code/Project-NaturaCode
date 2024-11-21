@@ -14,7 +14,6 @@ public class GoldManager : MonoBehaviour
 
     void Start()
     {
-
         gold = PlayerPrefs.GetInt("Gold", 0);
         UpdateGoldText();
         warningText.text = "";
@@ -35,6 +34,18 @@ public class GoldManager : MonoBehaviour
         }
     }
 
+    public bool SpendGold(int amount)
+    {
+        if (gold >= amount)
+        {
+            gold -= amount;
+            PlayerPrefs.SetInt("Gold", gold);
+            UpdateGoldText();
+            return true; 
+        }
+        return false; 
+    }
+
     private void UpdateGoldText()
     {
         goldText.text = "Gold: " + gold.ToString();
@@ -44,7 +55,7 @@ public class GoldManager : MonoBehaviour
     private IEnumerator ShowWarningTemporary(string message, float delay)
     {
         warningText.text = message;
-        yield return new WaitForSeconds(delay);
+        yield return new WaitForSecondsRealtime(delay);
         warningText.text = "";
     }
 
