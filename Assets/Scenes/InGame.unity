@@ -144,6 +144,54 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &183828208
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 183828210}
+  - component: {fileID: 183828209}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &183828209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 183828208}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0adda69709fb55f47a9b7d24a5812790, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialogBox: {fileID: 1442936951}
+  nameText: {fileID: 412032846}
+  dialogText: {fileID: 2065753104}
+  iconImage: {fileID: 1844738814}
+--- !u!4 &183828210
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 183828208}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 741.72095, y: 162.33253, z: -2.2151344}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &252138094
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -330,9 +378,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 287857072}
-  - component: {fileID: 287857071}
   - component: {fileID: 287857074}
   - component: {fileID: 287857073}
+  - component: {fileID: 287857075}
   m_Layer: 0
   m_Name: NPC
   m_TagString: Untagged
@@ -340,28 +388,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &287857071
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 287857070}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 27ad8da3bb1dc004d9d8c7627a5cb0b8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dialogue:
-    dialogueLines:
-    - character:
-        name: Joko Squer
-        icon: {fileID: 404864455, guid: 53a84a331a193484e9f1e9e7c9147c56, type: 3}
-      line: Halo Kamu
-    - character:
-        name: Joko Squer
-        icon: {fileID: 404864455, guid: 53a84a331a193484e9f1e9e7c9147c56, type: 3}
-      line: Halo Kamu 111
 --- !u!4 &287857072
 Transform:
   m_ObjectHideFlags: 0
@@ -474,6 +500,22 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &287857075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 287857070}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9fcac6677c7981e469409fa985763ebb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialogData: {fileID: 11400000, guid: bc5c98a24093a6841a4f1703ddfd5799, type: 2}
+  shouldGrantItem: 0
+  shouldChangeScene: 1
+  targetScene: InGameSea
 --- !u!1 &299219982
 GameObject:
   m_ObjectHideFlags: 0
@@ -1779,9 +1821,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1442936954}
-        m_TargetAssemblyTypeName: DialogueManager, Assembly-CSharp
-        m_MethodName: DisplayNextDialogueLine
+      - m_Target: {fileID: 183828209}
+        m_TargetAssemblyTypeName: DialogManager, Assembly-CSharp
+        m_MethodName: DisplayNextSentence
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2324,8 +2366,6 @@ GameObject:
   - component: {fileID: 1442936952}
   - component: {fileID: 1442936956}
   - component: {fileID: 1442936955}
-  - component: {fileID: 1442936954}
-  - component: {fileID: 1442936953}
   m_Layer: 5
   m_Name: DialogueBox
   m_TagString: Untagged
@@ -2353,48 +2393,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -925}
+  m_AnchoredPosition: {x: 0, y: -260}
   m_SizeDelta: {x: 1000, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!95 &1442936953
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1442936951}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 13ff1092f7863a64e984c21865575eba, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
---- !u!114 &1442936954
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1442936951}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 134721aad1f18ee46b6c7dd63f6febd1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  characterIcon: {fileID: 1844738814}
-  characterName: {fileID: 412032846}
-  dialogArea: {fileID: 2065753104}
-  isDialogueActive: 0
-  typingSpeed: 0.2
-  animator: {fileID: 1442936953}
 --- !u!114 &1442936955
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5993,3 +5994,4 @@ SceneRoots:
   - {fileID: 287857072}
   - {fileID: 355188786}
   - {fileID: 1199567833}
+  - {fileID: 183828210}
