@@ -5,16 +5,22 @@ using UnityEngine;
 public class PlayerController2 : MonoBehaviour
 {
     [SerializeField] private float speed = 5f;
-
     private Vector2 movement;
     private Rigidbody2D rb;
-
     [SerializeField] private Animator anime;
+
+    private GoldManager goldManager; 
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         rb.gravityScale = 1;
+
+        goldManager = FindObjectOfType<GoldManager>();
+        if (goldManager == null)
+        {
+            Debug.LogError("GoldManager tidak ditemukan di scene!");
+        }
     }
 
     void Update()
@@ -23,6 +29,11 @@ public class PlayerController2 : MonoBehaviour
         movement.y = Input.GetAxisRaw("Vertical");
 
         FlipAnimation();
+
+        if (Input.GetMouseButtonDown(0)) 
+        {
+            TryCatchFish();
+        }
     }
 
     private void FixedUpdate()
@@ -74,5 +85,30 @@ public class PlayerController2 : MonoBehaviour
             anime.SetBool("SwimX", false);
             anime.SetBool("SwimY", false);
         }
+    }
+
+    private void TryCatchFish()
+    {
+        Collider2D[] nearbyObjects = Physics2D.OverlapCircleAll(transform.position, 1f); 
+
+        foreach (var obj in nearbyObjects)
+        {
+            if (obj.CompareTag("Fish"))
+            {
+                if (goldManager != null)
+                {
+                    goldManager.ChangeGold(10); 
+                }
+
+                Destroy(obj.gameObject); 
+                break;
+            }
+        }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, 1f); 
     }
 }

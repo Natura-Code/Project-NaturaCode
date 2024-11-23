@@ -23,39 +23,65 @@ public class FishAI : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>(); // Ambil Animator
+        animator = GetComponent<Animator>();
+
+        // Coba cari objek player secara otomatis jika belum diatur
+        if (player == null)
+        {
+            GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+            if (playerObj != null)
+            {
+                player = playerObj.transform;
+            }
+            else
+            {
+                Debug.LogWarning("Player tidak ditemukan! Pastikan ada objek dengan tag 'Player' di scene.");
+            }
+        }
+
+        // Mulai rutinitas perubahan arah
         StartCoroutine(ChangeDirectionRoutine());
     }
 
     void FixedUpdate()
     {
-        float distanceToPlayer = Vector2.Distance(transform.position, player.position);
-
-        if (distanceToPlayer < fleeRadius)
+        if (player != null) // Pastikan player tidak null
         {
-            // Aktifkan animasi flee
-            animator.SetBool("isFleeing", true);
-            FleeFromPlayer();
+            float distanceToPlayer = Vector2.Distance(transform.position, player.position);
+
+            if (distanceToPlayer < fleeRadius)
+            {
+                // Aktifkan animasi flee
+                animator.SetBool("isFleeing", true);
+                FleeFromPlayer();
+            }
+            else
+            {
+                // Matikan animasi flee (kembali ke idle)
+                animator.SetBool("isFleeing", false);
+                MoveInRandomDirection();
+            }
         }
         else
         {
-            // Matikan animasi flee (kembali ke idle)
-            animator.SetBool("isFleeing", false);
+            Debug.LogWarning("Player masih belum diatur, ikan hanya akan bergerak secara normal.");
             MoveInRandomDirection();
         }
 
-        // Batasi pergerakan ikan
+        // Batasi pergerakan ikan dalam boundary
         RestrictMovementWithinBoundary();
     }
 
     void FleeFromPlayer()
     {
-        Vector2 fleeDirection = ((Vector2)transform.position - (Vector2)player.position).normalized;
-        rb.velocity = fleeDirection * fleeSpeed;
+        if (player != null) // Pastikan player tidak null
+        {
+            Vector2 fleeDirection = ((Vector2)transform.position - (Vector2)player.position).normalized;
+            rb.velocity = fleeDirection * fleeSpeed;
 
-        Debug.Log("Ikan sedang lari menjauh dari pemain!");
-        // Perbarui arah ikan berdasarkan arah flee
-        UpdateFishDirection(fleeDirection);
+            // Perbarui arah ikan berdasarkan arah flee
+            UpdateFishDirection(fleeDirection);
+        }
     }
 
     void MoveInRandomDirection()
@@ -96,6 +122,10 @@ public class FishAI : MonoBehaviour
 
             // Update posisi ikan jika keluar dari bounds
             transform.position = new Vector3(clampedX, clampedY, currentPosition.z);
+        }
+        else
+        {
+            Debug.LogWarning("Boundary Collider belum diatur! Ikan tidak akan dibatasi pergerakannya.");
         }
     }
 
