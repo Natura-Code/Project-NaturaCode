@@ -5,7 +5,7 @@ using UnityEngine;
 public class FishAI : MonoBehaviour
 {
     [Header("Player Interaction")]
-    public Transform player; // Objek pemain
+    public string playerTag = "Player"; // Tag untuk objek pemain
     public float fleeRadius = 3f; // Jarak ikan mulai menjauh
     public float fleeSpeed = 4f; // Kecepatan saat lari menjauh
 
@@ -19,16 +19,31 @@ public class FishAI : MonoBehaviour
     private Vector2 targetDirection; // Arah gerak acak
     private Rigidbody2D rb; // Untuk menggerakkan objek dengan Rigidbody
     private Animator animator; // Referensi Animator
+    private Transform player; // Transform pemain
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>(); // Ambil Animator
+        animator = GetComponent<Animator>();
+
+        // Cari objek pemain berdasarkan tag
+        GameObject playerObject = GameObject.FindGameObjectWithTag(playerTag);
+        if (playerObject != null)
+        {
+            player = playerObject.transform;
+        }
+        else
+        {
+            Debug.LogError("Player dengan tag '" + playerTag + "' tidak ditemukan.");
+        }
+
         StartCoroutine(ChangeDirectionRoutine());
     }
 
     void FixedUpdate()
     {
+        if (player == null) return; // Jika player belum ditemukan, hentikan
+
         float distanceToPlayer = Vector2.Distance(transform.position, player.position);
 
         if (distanceToPlayer < fleeRadius)
@@ -53,7 +68,6 @@ public class FishAI : MonoBehaviour
         Vector2 fleeDirection = ((Vector2)transform.position - (Vector2)player.position).normalized;
         rb.velocity = fleeDirection * fleeSpeed;
 
-        Debug.Log("Ikan sedang lari menjauh dari pemain!");
         // Perbarui arah ikan berdasarkan arah flee
         UpdateFishDirection(fleeDirection);
     }
@@ -84,28 +98,21 @@ public class FishAI : MonoBehaviour
     {
         if (boundaryCollider != null)
         {
-            // Dapatkan batas collider
             Bounds bounds = boundaryCollider.bounds;
-
-            // Ambil posisi saat ini
             Vector3 currentPosition = transform.position;
 
-            // Batasi posisi ikan agar tetap dalam bounds
             float clampedX = Mathf.Clamp(currentPosition.x, bounds.min.x, bounds.max.x);
             float clampedY = Mathf.Clamp(currentPosition.y, bounds.min.y, bounds.max.y);
 
-            // Update posisi ikan jika keluar dari bounds
             transform.position = new Vector3(clampedX, clampedY, currentPosition.z);
         }
     }
 
     void OnDrawGizmosSelected()
     {
-        // Visualisasi radius menjauh
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, fleeRadius);
 
-        // Visualisasi boundary 
         if (boundaryCollider != null)
         {
             Gizmos.color = Color.green;
@@ -115,16 +122,14 @@ public class FishAI : MonoBehaviour
 
     void UpdateFishDirection(Vector2 movementDirection)
     {
-        Vector3 currentScale = transform.localScale; // Ambil skala saat ini
+        Vector3 currentScale = transform.localScale;
 
         if (movementDirection.x > 0)
         {
-            // Menghadap kanan (pastikan X positif)
             transform.localScale = new Vector3(Mathf.Abs(currentScale.x), currentScale.y, currentScale.z);
         }
         else if (movementDirection.x < 0)
         {
-            // Menghadap kiri (pastikan X negatif)
             transform.localScale = new Vector3(-Mathf.Abs(currentScale.x), currentScale.y, currentScale.z);
         }
     }
