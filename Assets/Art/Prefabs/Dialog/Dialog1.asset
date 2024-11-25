@@ -16,7 +16,7 @@ MonoBehaviour:
   characterIcon: {fileID: -515640855, guid: 53a84a331a193484e9f1e9e7c9147c56, type: 3}
   dialogLines:
   - Halo anak muda kabar
-  - Halo anak muda kabar 1
+  - ' '
   - "Halo anak muda kabar 2\t"
   - Halo anak muda kabar 3
   - Halo anak muda kabar 4
