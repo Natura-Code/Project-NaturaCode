@@ -6,30 +6,96 @@ using UnityEngine;
 
 public class AiChes : MonoBehaviour
 {
-    public GameObject player;
-    public float speed;
-    private float distance;
-    public float distanceBetween;
+    [Header("AI Settings")]
+    public float speed = 5f; // Kecepatan ubur-ubur
+    public float distanceBetween = 5f; // Radius untuk mengejar pemain
+    public string playerTag = "Player"; // Tag untuk mengenali pemain
+    public float stunDuration = 2f; // Durasi stun pemain
+    public float fleeDistance = 3f; // Jarak untuk ubur-ubur menjauh setelah menyengat
 
+    private Transform playerTransform; // Transform pemain
+    private Transform aiTransform; // Transform ubur-ubur
+    private bool isFleeing = false; // Status apakah ubur-ubur sedang menjauh
 
-    // Start is called before the first frame update
     void Start()
     {
+        // Temukan pemain berdasarkan tag
+        GameObject player = GameObject.FindGameObjectWithTag(playerTag);
 
+        if (player != null)
+        {
+            playerTransform = player.transform;
+        }
+
+        aiTransform = transform;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        distance = Vector2.Distance(transform.position, player.transform.position);
-        Vector2 direction = player.transform.position - transform.position;
-        direction.Normalize();
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        // Jika pemain belum ditemukan, hentikan eksekusi
+        if (playerTransform == null) return;
 
-        if (distance < distanceBetween)
+        // Hitung jarak ke pemain
+        float distance = Vector2.Distance(aiTransform.position, playerTransform.position);
+
+        if (isFleeing)
         {
-            transform.position = Vector2.MoveTowards(this.transform.position, player.transform.position, speed * Time.deltaTime);
-            transform.rotation = Quaternion.Euler(Vector3.forward * angle);
+            // Jika ubur-ubur sedang menjauh, gerakkan menjauh dari pemain
+            FleeFromPlayer();
+        }
+        else if (distance < distanceBetween)
+        {
+            // Jika dalam radius, kejar pemain
+            MoveTowardsPlayer();
+        }
+    }
+
+    private void MoveTowardsPlayer()
+    {
+        Vector2 direction = (playerTransform.position - aiTransform.position).normalized;
+
+        // Kejar pemain
+        aiTransform.position = Vector2.MoveTowards(
+            aiTransform.position,
+            playerTransform.position,
+            speed * Time.deltaTime
+        );
+    }
+
+    private void FleeFromPlayer()
+    {
+        Vector2 fleeDirection = (aiTransform.position - playerTransform.position).normalized;
+
+        // Menjauh dari pemain
+        aiTransform.position = Vector2.MoveTowards(
+            aiTransform.position,
+            aiTransform.position + (Vector3)fleeDirection,
+            speed * Time.deltaTime
+        );
+
+        // Berhenti menjauh jika sudah cukup jauh
+        if (Vector2.Distance(aiTransform.position, playerTransform.position) > fleeDistance)
+        {
+            isFleeing = false; // Kembali ke normal
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        // Periksa apakah yang disentuh adalah pemain
+        if (other.CompareTag(playerTag) && !isFleeing)
+        {
+            Debug.Log("Ubur-ubur menyengat pemain!");
+
+            // Beri stun ke pemain
+            PlayerController2 playerController = other.GetComponent<PlayerController2>();
+            if (playerController != null)
+            {
+                playerController.Stun(stunDuration);
+            }
+
+            // Mulai proses menjauh
+            isFleeing = true;
         }
     }
 }

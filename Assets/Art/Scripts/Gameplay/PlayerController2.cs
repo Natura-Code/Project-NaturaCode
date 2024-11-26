@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerController2 : MonoBehaviour
 {
+    private bool isStunned = false; // Apakah pemain sedang terkena stun
+
     [SerializeField] private float speed = 5f;
 
     private Vector2 movement;
@@ -19,11 +21,14 @@ public class PlayerController2 : MonoBehaviour
 
     void Update()
     {
+        if (isStunned) return; // Abaikan input jika sedang stun
+
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
 
         FlipAnimation();
     }
+
 
     private void FixedUpdate()
     {
@@ -75,4 +80,25 @@ public class PlayerController2 : MonoBehaviour
             anime.SetBool("SwimY", false);
         }
     }
+
+    public void Stun(float duration)
+    {
+        StartCoroutine(StunCoroutine(duration));
+    }
+
+    private IEnumerator StunCoroutine(float duration)
+    {
+        Debug.Log("Player stunned!");
+        // Disable movement
+        enabled = false;
+
+        yield return new WaitForSeconds(duration);
+
+        // Enable movement
+        Debug.Log("Player recovered from stun.");
+        enabled = true;
+    }
+
+
+
 }
