@@ -66,4 +66,9 @@ public class GoldManager : MonoBehaviour
         warningText = newWarningText;
         UpdateGoldText();
     }
+    public int GetGold()
+    {
+        return PlayerPrefs.GetInt("Gold", 0); 
+    }
+
 }
