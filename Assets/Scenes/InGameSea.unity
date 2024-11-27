@@ -3751,9 +3751,10 @@ GameObject:
   - component: {fileID: 2097921273}
   - component: {fileID: 2097921272}
   - component: {fileID: 2097921271}
-  - component: {fileID: 2097921275}
   - component: {fileID: 2097921276}
   - component: {fileID: 2097921277}
+  - component: {fileID: 2097921275}
+  - component: {fileID: 2097921278}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player1
@@ -3953,6 +3954,27 @@ MonoBehaviour:
   goldCostForUpgrade: 30
   oxygenSlider: {fileID: 574185970}
   warningText: {fileID: 737587653}
+--- !u!231 &2097921278
+SpringJoint2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2097921270}
+  m_Enabled: 0
+  serializedVersion: 4
+  m_EnableCollision: 1
+  m_ConnectedRigidBody: {fileID: 0}
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_BreakAction: 3
+  m_AutoConfigureConnectedAnchor: 1
+  m_Anchor: {x: 0, y: 0}
+  m_ConnectedAnchor: {x: 1.1848981, y: 1.2}
+  m_AutoConfigureDistance: 1
+  m_Distance: 0.005
+  m_DampingRatio: 1
+  m_Frequency: 1
 --- !u!114 &2103799224 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4077191794609033351, guid: d79cb6c949b0464409d69b913aac06fe, type: 3}
