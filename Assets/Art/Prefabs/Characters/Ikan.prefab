@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 7541407438020067950}
   m_Layer: 0
   m_Name: Ikan
-  m_TagString: Untagged
+  m_TagString: Fish
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -133,7 +133,6 @@ MonoBehaviour:
   fleeSpeed: 4
   normalSpeed: 2
   directionChangeInterval: 2
-  boundaryTag: Boundary
 --- !u!58 &8479230839330597996
 CircleCollider2D:
   m_ObjectHideFlags: 0

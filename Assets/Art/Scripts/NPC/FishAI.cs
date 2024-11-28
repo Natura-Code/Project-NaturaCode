@@ -5,27 +5,25 @@ using UnityEngine;
 public class FishAI : MonoBehaviour
 {
     [Header("Player Interaction")]
-    public Transform player; // Objek pemain
-    public float fleeRadius = 3f; // Jarak ikan mulai menjauh
-    public float fleeSpeed = 4f; // Kecepatan saat lari menjauh
+    public Transform player; 
+    public float fleeRadius = 3f; 
+    public float fleeSpeed = 4f; 
 
     [Header("Normal Behavior")]
-    public float normalSpeed = 2f; // Kecepatan normal
-    public float directionChangeInterval = 2f; // Interval pergantian arah acak
+    public float normalSpeed = 2f; 
+    public float directionChangeInterval = 2f; 
 
-    [Header("Boundary Settings")]
-    public BoxCollider2D boundaryCollider; // Collider pembatas
-
-    private Vector2 targetDirection; // Arah gerak acak
-    private Rigidbody2D rb; // Untuk menggerakkan objek dengan Rigidbody
-    private Animator animator; // Referensi Animator
+    private BoxCollider2D boundaryCollider; 
+    private Vector2 targetDirection; 
+    private Rigidbody2D rb; 
+    private Animator animator; 
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
 
-        // Coba cari objek player secara otomatis jika belum diatur
+        // cari objek player secara otomatis jika belum diatur
         if (player == null)
         {
             GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
@@ -37,6 +35,21 @@ public class FishAI : MonoBehaviour
             {
                 Debug.LogWarning("Player tidak ditemukan! Pastikan ada objek dengan tag 'Player' di scene.");
             }
+        }
+
+        // cari collider dengan tag "Boundary"
+        GameObject boundaryObj = GameObject.FindGameObjectWithTag("Boundary");
+        if (boundaryObj != null)
+        {
+            boundaryCollider = boundaryObj.GetComponent<BoxCollider2D>();
+            if (boundaryCollider == null)
+            {
+                Debug.LogWarning("Objek dengan tag 'Boundary' tidak memiliki BoxCollider2D.");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("Boundary tidak ditemukan! Pastikan ada objek dengan tag 'Boundary' di scene.");
         }
 
         // Mulai rutinitas perubahan arah
@@ -68,7 +81,6 @@ public class FishAI : MonoBehaviour
             MoveInRandomDirection();
         }
 
-        // Batasi pergerakan ikan dalam boundary
         RestrictMovementWithinBoundary();
     }
 
@@ -110,17 +122,13 @@ public class FishAI : MonoBehaviour
     {
         if (boundaryCollider != null)
         {
-            // Dapatkan batas collider
             Bounds bounds = boundaryCollider.bounds;
 
-            // Ambil posisi saat ini
             Vector3 currentPosition = transform.position;
 
-            // Batasi posisi ikan agar tetap dalam bounds
             float clampedX = Mathf.Clamp(currentPosition.x, bounds.min.x, bounds.max.x);
             float clampedY = Mathf.Clamp(currentPosition.y, bounds.min.y, bounds.max.y);
 
-            // Update posisi ikan jika keluar dari bounds
             transform.position = new Vector3(clampedX, clampedY, currentPosition.z);
         }
         else
@@ -135,7 +143,6 @@ public class FishAI : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, fleeRadius);
 
-        // Visualisasi boundary 
         if (boundaryCollider != null)
         {
             Gizmos.color = Color.green;

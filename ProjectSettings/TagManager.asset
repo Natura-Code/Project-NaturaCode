@@ -6,6 +6,7 @@ TagManager:
   tags:
   - WaterSurface
   - Fish
+  - Boundary
   layers:
   - Default
   - TransparentFX

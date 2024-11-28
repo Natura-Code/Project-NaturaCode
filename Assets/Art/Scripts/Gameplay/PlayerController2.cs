@@ -9,8 +9,8 @@ public class PlayerController2 : MonoBehaviour
     private Rigidbody2D rb;
     [SerializeField] private Animator anime;
 
-    private GoldManager goldManager; 
-
+    private GoldManager goldManager;
+    private bool isStunned = false;
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -19,12 +19,14 @@ public class PlayerController2 : MonoBehaviour
         goldManager = FindObjectOfType<GoldManager>();
         if (goldManager == null)
         {
-            Debug.LogError("GoldManager tidak ditemukan di scene!");
+            Debug.LogError("GoldManager tidak ditemukan");
         }
     }
 
     void Update()
     {
+        if (isStunned) return;
+
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
 
@@ -110,5 +112,20 @@ public class PlayerController2 : MonoBehaviour
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, 1f); 
+    }
+    public void Stun(float duration)
+    {
+        StartCoroutine(StunCoroutine(duration));
+    }
+
+    private IEnumerator StunCoroutine(float duration)
+    {
+        Debug.Log("Player stunned!");
+        enabled = false;
+
+        yield return new WaitForSeconds(duration);
+
+        Debug.Log("Player recovered from stun.");
+        enabled = true;
     }
 }
