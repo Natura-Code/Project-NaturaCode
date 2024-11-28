@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06a2c0a1860d0594294882076fa2545f, type: 3}
   m_Name: Dialog1
   m_EditorClassIdentifier: 
-  characterName: Jamilah
-  characterIcon: {fileID: -515640855, guid: 53a84a331a193484e9f1e9e7c9147c56, type: 3}
+  characterName: Kapten Rana
+  characterIcon: {fileID: -1658489854, guid: e5c60fa03810d424bb8ece228042e4ab, type: 3}
   dialogLines:
   - Halo anak muda kabar
-  - ' '
+  - Halo anak muda kabar 1
   - "Halo anak muda kabar 2\t"
   - Halo anak muda kabar 3
   - Halo anak muda kabar 4
