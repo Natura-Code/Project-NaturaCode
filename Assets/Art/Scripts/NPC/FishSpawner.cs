@@ -24,7 +24,6 @@ public class FishSpawner : MonoBehaviour
         }
     }
 
-    
     public void SpawnFish()
     {
         float randomX = Random.Range(spawnAreaMin.x, spawnAreaMax.x);

@@ -754,7 +754,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &663614396
 Transform:
   m_ObjectHideFlags: 0
@@ -2215,7 +2215,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -2, y: -4}
+  m_AnchoredPosition: {x: 1, y: 53}
   m_SizeDelta: {x: 361.6647, y: 157.0764}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1648966123
@@ -2264,7 +2264,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1076463445}
         m_TargetAssemblyTypeName: Setting, Assembly-CSharp
-        m_MethodName: InGame2Button
+        m_MethodName: InGameButton
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2412,7 +2412,7 @@ Transform:
   m_GameObject: {fileID: 1737608630}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.9186845, y: -0.0067254994, z: -10}
+  m_LocalPosition: {x: 6.710596, y: -0.33355984, z: -10}
   m_LocalScale: {x: 1.1064395, y: 1.1322465, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3180,6 +3180,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2013152723466363723, guid: 267fc0f264b00624db68a9fe90346fa1, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 2163134485452445672, guid: 267fc0f264b00624db68a9fe90346fa1, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -3607,6 +3611,14 @@ PrefabInstance:
     - target: {fileID: 3353435275770917259, guid: 267fc0f264b00624db68a9fe90346fa1, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3388807146710754458, guid: 267fc0f264b00624db68a9fe90346fa1, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3388807146710754458, guid: 267fc0f264b00624db68a9fe90346fa1, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -135
       objectReference: {fileID: 0}
     - target: {fileID: 3408159629619220845, guid: 267fc0f264b00624db68a9fe90346fa1, type: 3}
       propertyPath: m_AnchorMax.y
@@ -4223,6 +4235,22 @@ PrefabInstance:
     - target: {fileID: 5774595200486084839, guid: 267fc0f264b00624db68a9fe90346fa1, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: ChangeGold
+      objectReference: {fileID: 0}
+    - target: {fileID: 5836937368281727537, guid: 267fc0f264b00624db68a9fe90346fa1, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5836937368281727537, guid: 267fc0f264b00624db68a9fe90346fa1, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1076463445}
+    - target: {fileID: 5836937368281727537, guid: 267fc0f264b00624db68a9fe90346fa1, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: InGameButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 5836937368281727537, guid: 267fc0f264b00624db68a9fe90346fa1, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: MainMenu
       objectReference: {fileID: 0}
     - target: {fileID: 6162204737793438471, guid: 267fc0f264b00624db68a9fe90346fa1, type: 3}
       propertyPath: m_AnchorMax.y
@@ -5071,7 +5099,7 @@ Transform:
   m_GameObject: {fileID: 2095741668}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -9.24, y: 2.12, z: 0}
+  m_LocalPosition: {x: -12.64, y: 6.23, z: 0}
   m_LocalScale: {x: 0.9038, y: 0.8832, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
