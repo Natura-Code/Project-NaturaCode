@@ -4889,7 +4889,7 @@ GameObject:
   - component: {fileID: 1123596861}
   - component: {fileID: 1123596860}
   m_Layer: 5
-  m_Name: Get slected item
+  m_Name: Get selected item
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
