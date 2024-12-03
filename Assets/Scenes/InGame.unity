@@ -4615,6 +4615,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d7ce027b6b10784eafd292b052e6ed8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  starItem:
+  - {fileID: 11400000, guid: 4df3198d8cefdfa4eb72eeaca5af593b, type: 2}
+  - {fileID: 11400000, guid: 34386df737ffd1e438acedc78ccf1974, type: 2}
+  - {fileID: 11400000, guid: aefe0f13d1c02054f9a35f6f2ed9eb5f, type: 2}
   maxStackedItems: 4
   inventorySlots:
   - {fileID: 244339434}
