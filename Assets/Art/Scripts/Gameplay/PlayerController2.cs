@@ -1,34 +1,50 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController2 : MonoBehaviour
 {
-    private bool isStunned = false; // Apakah pemain sedang terkena stun
-
     [SerializeField] private float speed = 5f;
+    [SerializeField] private Animator anime;
 
     private Vector2 movement;
     private Rigidbody2D rb;
 
-    [SerializeField] private Animator anime;
+    private GoldManager goldManager;
+    private bool isStunned = false;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        rb.gravityScale = 1;
+
+        // Load posisi pemain untuk scene "InGameSea" jika tersedia
+        if (PlayerPrefs.HasKey("InGameSea_X") && PlayerPrefs.HasKey("InGameSea_Y"))
+        {
+            float x = PlayerPrefs.GetFloat("InGameSea_X");
+            float y = PlayerPrefs.GetFloat("InGameSea_Y");
+            transform.position = new Vector3(x, y, 0);
+        }
+
+        goldManager = FindObjectOfType<GoldManager>();
+        if (goldManager == null)
+        {
+            Debug.LogError("GoldManager tidak ditemukan");
+        }
     }
 
-    void Update()
+    private void Update()
     {
-        if (isStunned) return; // Abaikan input jika sedang stun
+        if (isStunned) return;
 
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
 
         FlipAnimation();
-    }
 
+        if (Input.GetMouseButtonDown(0))
+        {
+            TryCatchFish();
+        }
+    }
 
     private void FixedUpdate()
     {
@@ -42,6 +58,7 @@ public class PlayerController2 : MonoBehaviour
             rb.velocity = Vector2.zero;
             rb.gravityScale = 10;
         }
+
     }
 
     private void FlipAnimation()
@@ -52,14 +69,7 @@ public class PlayerController2 : MonoBehaviour
             anime.SetBool("SwimY", false);
             anime.SetBool("Swim", false);
 
-            if (movement.x < 0)
-            {
-                transform.localScale = new Vector3(-1, 1, 1);
-            }
-            else if (movement.x > 0)
-            {
-                transform.localScale = new Vector3(1, 1, 1);
-            }
+            transform.localScale = new Vector3(movement.x < 0 ? -1 : 1, 1, 1);
         }
         else if (movement.y > 0)
         {
@@ -69,9 +79,9 @@ public class PlayerController2 : MonoBehaviour
         }
         else if (movement.y < 0)
         {
-            anime.SetBool("Swim", false);
-            anime.SetBool("SwimX", false);
             anime.SetBool("SwimY", true);
+            anime.SetBool("SwimX", false);
+            anime.SetBool("Swim", false);
         }
         else
         {
@@ -79,6 +89,31 @@ public class PlayerController2 : MonoBehaviour
             anime.SetBool("SwimX", false);
             anime.SetBool("SwimY", false);
         }
+    }
+
+    private void TryCatchFish()
+    {
+        Collider2D[] nearbyObjects = Physics2D.OverlapCircleAll(transform.position, 1f);
+
+        foreach (var obj in nearbyObjects)
+        {
+            if (obj.CompareTag("Fish"))
+            {
+                if (goldManager != null)
+                {
+                    goldManager.ChangeGold(10); // Tambah 10 gold
+                }
+
+                Destroy(obj.gameObject); // Hancurkan ikan
+                break;
+            }
+        }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, 1f); // Visual radius tangkapan
     }
 
     public void Stun(float duration)
@@ -89,16 +124,19 @@ public class PlayerController2 : MonoBehaviour
     private IEnumerator StunCoroutine(float duration)
     {
         Debug.Log("Player stunned!");
-        // Disable movement
-        enabled = false;
+        isStunned = true;
 
         yield return new WaitForSeconds(duration);
 
-        // Enable movement
         Debug.Log("Player recovered from stun.");
-        enabled = true;
+        isStunned = false;
     }
 
-
-
+    private void OnApplicationQuit()
+    {
+        // Simpan posisi pemain untuk scene "InGameSea" sebelum keluar
+        PlayerPrefs.SetFloat("InGameSea_X", transform.position.x);
+        PlayerPrefs.SetFloat("InGameSea_Y", transform.position.y);
+        PlayerPrefs.Save();
+    }
 }

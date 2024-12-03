@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class Setting : MonoBehaviour
@@ -10,6 +7,7 @@ public class Setting : MonoBehaviour
     [SerializeField] private GameObject pilihanMenuPanel;
     [SerializeField] private GameObject storePanel;
     [SerializeField] private GameObject inventoryPanel;
+
     private bool isPilihanMenuOpen = false;
 
     void Start()
@@ -25,7 +23,7 @@ public class Setting : MonoBehaviour
     {
         if (storePanel.activeSelf || inventoryPanel.activeSelf)
         {
-            return; 
+            return;
         }
 
         if (Input.GetKeyDown(KeyCode.P))
@@ -41,14 +39,9 @@ public class Setting : MonoBehaviour
         }
     }
 
-    public void InGameButton(string scenename)
+    public void InGameButton(string sceneName)
     {
-        SceneManager.LoadScene(scenename);
-    }
-
-    public void InGame2Button(string scenename)
-    {
-        SceneManager.LoadScene(scenename);
+        SceneManager.LoadScene(sceneName);
     }
 
     public void PilihanButton()

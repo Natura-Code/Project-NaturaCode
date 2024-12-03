@@ -4,22 +4,27 @@ using System.Collections;
 
 public class WaterSurfaceDetector : MonoBehaviour
 {
-    [SerializeField] private float maxOxygen;
+    [SerializeField] private float maxOxygen = 100f;
     [SerializeField] private float currentOxygen;
     [SerializeField] private float oxygenRate = 1f;
     private bool isUnderwater = false;
 
-    [SerializeField] private int goldCostForUpgrade;
+    [SerializeField] private int goldCostForUpgrade = 50;
     private GoldManager goldManager;
     [SerializeField] private UnityEngine.UI.Slider oxygenSlider;
 
     [SerializeField] private TextMeshProUGUI warningText;
+    [SerializeField] private TextMeshProUGUI countdownText; 
+    [SerializeField] private Transform startingPoint; 
+    private bool isOxygenDepleted = false; 
+    private Coroutine oxygenDepletedCoroutine; 
 
     void Start()
     {
         currentOxygen = maxOxygen;
         UpdateOxygenSlider();
         goldManager = FindObjectOfType<GoldManager>();
+        countdownText.text = ""; 
     }
 
     void Update()
@@ -30,7 +35,11 @@ public class WaterSurfaceDetector : MonoBehaviour
             if (currentOxygen <= 0)
             {
                 currentOxygen = 0;
-                HandleOxygenDepleted();
+                if (!isOxygenDepleted) 
+                {
+                    isOxygenDepleted = true;
+                    oxygenDepletedCoroutine = StartCoroutine(HandleOxygenDepletionCountdown());
+                }
             }
         }
         else
@@ -41,6 +50,16 @@ public class WaterSurfaceDetector : MonoBehaviour
                 if (currentOxygen > maxOxygen)
                 {
                     currentOxygen = maxOxygen;
+                }
+            }
+
+            if (isOxygenDepleted) 
+            {
+                isOxygenDepleted = false;
+                if (oxygenDepletedCoroutine != null)
+                {
+                    StopCoroutine(oxygenDepletedCoroutine);
+                    countdownText.text = ""; 
                 }
             }
         }
@@ -54,9 +73,19 @@ public class WaterSurfaceDetector : MonoBehaviour
         {
             maxOxygen += 10f;
             currentOxygen = maxOxygen;
-            UpdateOxygenSlider(); 
-            Debug.Log("Oksigen tekah ditingkatkan, Sekarang: " + maxOxygen);
+            UpdateOxygenSlider();
+            Debug.Log("Oksigen telah ditingkatkan, Sekarang: " + maxOxygen);
             StartCoroutine(ShowWarningTemporary("Pembelian Berhasil Oksigen = " + maxOxygen, 2f));
+
+            if (isOxygenDepleted) 
+            {
+                isOxygenDepleted = false;
+                if (oxygenDepletedCoroutine != null)
+                {
+                    StopCoroutine(oxygenDepletedCoroutine);
+                    countdownText.text = ""; 
+                }
+            }
         }
         else
         {
@@ -87,9 +116,45 @@ public class WaterSurfaceDetector : MonoBehaviour
         }
     }
 
-    void HandleOxygenDepleted()
+    private IEnumerator HandleOxygenDepletionCountdown()
     {
-        Debug.Log("Pemain kehabisan oksigen!");
+        float countdown = 5f;
+        StartCoroutine(ShowWarningTemporary("Oksigen habis! Tinggalkan air atau upgrade oksigen!", countdown));
+
+        while (countdown > 0)
+        {
+            countdownText.text = "Respawning: " + Mathf.CeilToInt(countdown); 
+            yield return new WaitForSeconds(1f);
+            countdown--;
+
+            if (!isUnderwater || !isOxygenDepleted) 
+            {
+                countdownText.text = ""; 
+                yield break;
+            }
+        }
+
+        countdownText.text = ""; 
+        transform.position = startingPoint.position;
+
+        if (goldManager != null)
+        {
+            int currentGold = goldManager.GetGold(); 
+            if (currentGold >= 100)
+            {
+                goldManager.ChangeGold(-100); 
+                Debug.Log("Kembali ke titik awal. Emas berkurang 100.");
+            }
+            else
+            {
+                goldManager.ChangeGold(-currentGold); 
+                Debug.Log("Kembali ke titik awal. Semua emas habis.");
+            }
+        }
+
+        currentOxygen = maxOxygen;
+        isOxygenDepleted = false;
+        UpdateOxygenSlider();
     }
 
     private IEnumerator ShowWarningTemporary(string message, float delay)
