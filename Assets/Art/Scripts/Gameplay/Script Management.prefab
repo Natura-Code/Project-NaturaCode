@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 8436896847307245191}
   - component: {fileID: 660242799297175489}
   - component: {fileID: 5489541240011949065}
-  - component: {fileID: 7663163459865776481}
   - component: {fileID: 4077191794609033351}
   m_Layer: 0
   m_Name: Script Management
@@ -81,24 +80,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LoadingScreen: {fileID: 0}
   LoadingBarFill: {fileID: 0}
---- !u!114 &7663163459865776481
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6520212447239422588}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 74c87d60e33de2e4aa5e75d3254f4325, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inventoryUI: {fileID: 4152818195700363319, guid: 98ce3a401dbe92a478934b97d7cf3d76, type: 3}
-  settingMenuPanel: {fileID: 0}
-  pilihanMenuPanel: {fileID: 0}
-  inventoryPanel: {fileID: 0}
-  storePanel: {fileID: 0}
-  inventorySize: 14
 --- !u!114 &4077191794609033351
 MonoBehaviour:
   m_ObjectHideFlags: 0

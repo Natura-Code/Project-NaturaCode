@@ -8,11 +8,11 @@ public class StoreController : MonoBehaviour
     [SerializeField] private GameObject settingMenuPanel;
     [SerializeField] private GameObject pilihanMenuPanel;
     [SerializeField] private GameObject storePanel;
-    [SerializeField] private GameObject inventoryPanel;
+    //[SerializeField] private GameObject inventoryPanel;
 
     void Update()
     {
-        if (pilihanMenuPanel.activeSelf || inventoryPanel.activeSelf)
+        if (pilihanMenuPanel.activeSelf) //|| inventoryPanel.activeSelf
         {
             return;
         }
