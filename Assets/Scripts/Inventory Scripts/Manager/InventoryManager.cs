@@ -4,12 +4,11 @@ using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
 {
-
     public static InventoryManager instance;
-    public Item[] starItem;
-    public int maxStackedItems = 4;
-    public InventorySlot[] inventorySlots; //slot array 
-    public GameObject inventoryItemPrefab; //
+    public Item[] starItem; 
+    public int maxStackedItems = 4; 
+    public InventorySlot[] inventorySlots; 
+    public GameObject inventoryItemPrefab; 
 
     int selectedSlot = -1;
 
@@ -21,10 +20,18 @@ public class InventoryManager : MonoBehaviour
     private void Start()
     {
         ChangeSelectedSlot(0);
-        foreach (var item in starItem)
+        if (!LoadInventory()) 
         {
-            AddItem(item);
+            foreach (var item in starItem)
+            {
+                AddItem(item);
+            }
         }
+    }
+
+    private void OnApplicationQuit()
+    {
+        SaveInventory(); 
     }
 
     private void Update()
@@ -39,7 +46,6 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-
     void ChangeSelectedSlot(int newValue)
     {
         if (selectedSlot >= 0)
@@ -52,15 +58,14 @@ public class InventoryManager : MonoBehaviour
 
     public bool AddItem(Item item)
     {
-        // Untuk Mencari Slot yang Tidak Penuh
         for (int i = 0; i < inventorySlots.Length; i++)
         {
             InventorySlot slot = inventorySlots[i];
             InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
             if (itemInSlot != null &&
-            itemInSlot.item == item &&
-            itemInSlot.count < maxStackedItems &&
-            itemInSlot.item.stackable == true)
+                itemInSlot.item == item &&
+                itemInSlot.count < maxStackedItems &&
+                itemInSlot.item.stackable == true)
             {
                 itemInSlot.count++;
                 itemInSlot.RefreshCount();
@@ -68,7 +73,6 @@ public class InventoryManager : MonoBehaviour
             }
         }
 
-        // Untuk Mencari Slot Kosong
         for (int i = 0; i < inventorySlots.Length; i++)
         {
             InventorySlot slot = inventorySlots[i];
@@ -81,7 +85,6 @@ public class InventoryManager : MonoBehaviour
         }
 
         return false;
-
     }
 
     void SpawnNewItem(Item item, InventorySlot slot)
@@ -89,9 +92,8 @@ public class InventoryManager : MonoBehaviour
         GameObject newItemGo = Instantiate(inventoryItemPrefab, slot.transform);
         InventoryItem inventoryItem = newItemGo.GetComponent<InventoryItem>();
         inventoryItem.InitialiseItem(item);
-
-
     }
+
     public Item GetSelectedItem(bool use)
     {
         InventorySlot slot = inventorySlots[selectedSlot];
@@ -115,6 +117,62 @@ public class InventoryManager : MonoBehaviour
             return item;
         }
         return null;
-
     }
+
+    void SaveInventory()
+    {
+        List<InventoryData> inventoryData = new List<InventoryData>();
+        foreach (var slot in inventorySlots)
+        {
+            InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
+            if (itemInSlot != null)
+            {
+                inventoryData.Add(new InventoryData
+                {
+                    itemName = itemInSlot.item.name,
+                    count = itemInSlot.count
+                });
+            }
+        }
+
+        string json = JsonUtility.ToJson(new InventoryWrapper { inventoryList = inventoryData });
+        PlayerPrefs.SetString("InventoryData", json);
+        PlayerPrefs.Save();
+        Debug.Log("Inventory saved: " + json);
+    }
+
+    bool LoadInventory()
+    {
+        string json = PlayerPrefs.GetString("InventoryData", string.Empty);
+        if (!string.IsNullOrEmpty(json))
+        {
+            InventoryWrapper wrapper = JsonUtility.FromJson<InventoryWrapper>(json);
+            foreach (var data in wrapper.inventoryList)
+            {
+                Item item = System.Array.Find(starItem, i => i.name == data.itemName);
+                for (int i = 0; i < data.count; i++)
+                {
+                    AddItem(item);
+                }
+            }
+            Debug.Log("Inventory loaded: " + json);
+            return true; 
+        }
+
+        return false; 
+    }
+
+}
+
+[System.Serializable]
+public class InventoryWrapper
+{
+    public List<InventoryData> inventoryList;
+}
+
+[System.Serializable]
+public class InventoryData
+{
+    public string itemName;
+    public int count;
 }
