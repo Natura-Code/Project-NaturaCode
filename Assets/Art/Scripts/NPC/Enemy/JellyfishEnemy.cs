@@ -1,8 +1,8 @@
-using System.Collections.Generic;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class JellyfishEnemy : MonoBehaviour
+public class JellyFishEnemy : MonoBehaviour
 {
     [Header("Movement Settings")]
     public float wanderSpeed = 2f; // Kecepatan gerakan bebas
@@ -22,12 +22,15 @@ public class JellyfishEnemy : MonoBehaviour
     private bool isFleeing = false; // Status apakah sedang menjauh
     private bool isAttacking = false; // Status apakah sedang menyerang
 
+    [Header("Boundary Settings")]
+    public BoxCollider2D boundaryCollider;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
 
         // Cari pemain berdasarkan tag
-        GameObject player = GameObject.FindGameObjectWithTag("Player1");
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
         if (player != null)
         {
             playerTransform = player.transform;
@@ -58,6 +61,7 @@ public class JellyfishEnemy : MonoBehaviour
             // Gerakan bebas seperti ikan
             Wander();
         }
+        RestrictMovementWithinBoundary();
     }
 
     private void Wander()
@@ -131,5 +135,27 @@ public class JellyfishEnemy : MonoBehaviour
         // Kembali ke mode normal
         isFleeing = false;
         rb.velocity = Vector2.zero;
+    }
+    void RestrictMovementWithinBoundary()
+    {
+        if (boundaryCollider != null)
+        {
+            // Dapatkan batas collider
+            Bounds bounds = boundaryCollider.bounds;
+
+            // Ambil posisi saat ini
+            Vector3 currentPosition = transform.position;
+
+            // Batasi posisi ikan agar tetap dalam bounds
+            float clampedX = Mathf.Clamp(currentPosition.x, bounds.min.x, bounds.max.x);
+            float clampedY = Mathf.Clamp(currentPosition.y, bounds.min.y, bounds.max.y);
+
+            // Update posisi ikan jika keluar dari bounds
+            transform.position = new Vector3(clampedX, clampedY, currentPosition.z);
+        }
+        else
+        {
+            Debug.LogWarning("Boundary Collider belum diatur! Ikan tidak akan dibatasi pergerakannya.");
+        }
     }
 }

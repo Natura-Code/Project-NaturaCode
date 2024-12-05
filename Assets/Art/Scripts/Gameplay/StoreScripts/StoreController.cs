@@ -6,13 +6,13 @@ public class StoreController : MonoBehaviour
 {
     private bool isStoreOpen = false;
     [SerializeField] private GameObject settingMenuPanel;
-    [SerializeField] private GameObject pilihanMenuPanel;
+    [SerializeField] private GameObject gameUIPanel;
     [SerializeField] private GameObject storePanel;
     //[SerializeField] private GameObject inventoryPanel;
 
     void Update()
     {
-        if (pilihanMenuPanel.activeSelf) //|| inventoryPanel.activeSelf
+        if (settingMenuPanel.activeSelf) //|| inventoryPanel.activeSelf
         {
             return;
         }
@@ -31,7 +31,7 @@ public class StoreController : MonoBehaviour
     }
     public void StoreButton()
     {
-        settingMenuPanel.SetActive(false);
+        gameUIPanel.SetActive(false);
         storePanel.SetActive(true);
         isStoreOpen = true;
         Time.timeScale = 0f;
@@ -40,7 +40,7 @@ public class StoreController : MonoBehaviour
     public void BackButtonStore()
     {
         storePanel.SetActive(false);
-        settingMenuPanel.SetActive(true);
+        gameUIPanel.SetActive(true);
         isStoreOpen = false;
         Time.timeScale = 1f;
     }

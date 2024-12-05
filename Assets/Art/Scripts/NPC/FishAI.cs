@@ -5,18 +5,18 @@ using UnityEngine;
 public class FishAI : MonoBehaviour
 {
     [Header("Player Interaction")]
-    public Transform player; 
-    public float fleeRadius = 3f; 
-    public float fleeSpeed = 4f; 
+    public Transform player;
+    public float fleeRadius = 3f;
+    public float fleeSpeed = 4f;
 
     [Header("Normal Behavior")]
-    public float normalSpeed = 2f; 
-    public float directionChangeInterval = 2f; 
+    public float normalSpeed = 2f;
+    public float directionChangeInterval = 2f;
 
-    private BoxCollider2D boundaryCollider; 
-    private Vector2 targetDirection; 
-    private Rigidbody2D rb; 
-    private Animator animator; 
+    private BoxCollider2D boundaryCollider;
+    private Vector2 targetDirection;
+    private Rigidbody2D rb;
+    private Animator animator;
 
     void Start()
     {

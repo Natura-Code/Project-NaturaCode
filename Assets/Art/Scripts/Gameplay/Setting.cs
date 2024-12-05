@@ -3,17 +3,17 @@ using UnityEngine.SceneManagement;
 
 public class Setting : MonoBehaviour
 {
+    [SerializeField] private GameObject gameUIPanel;
     [SerializeField] private GameObject settingMenuPanel;
-    [SerializeField] private GameObject pilihanMenuPanel;
     [SerializeField] private GameObject storePanel;
     //[SerializeField] private GameObject inventoryPanel;
 
-    private bool isPilihanMenuOpen = false;
+    private bool isSettingMenuOpen = false;
 
     void Start()
     {
-        settingMenuPanel.SetActive(true);
-        pilihanMenuPanel.SetActive(false);
+        gameUIPanel.SetActive(true);
+        settingMenuPanel.SetActive(false);
         storePanel.SetActive(false);
         //inventoryPanel.SetActive(false);
         Time.timeScale = 1f;
@@ -28,35 +28,36 @@ public class Setting : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.P))
         {
-            if (isPilihanMenuOpen)
+            if (isSettingMenuOpen)
             {
-                BackButtonPilihanMenu();
+                BackButtonSetting();
             }
             else
             {
-                PilihanButton();
+                SettingButton();
             }
         }
     }
 
-    public void InGameButton(string sceneName)
+    public void InGameLoad(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
+        Time.timeScale = 1f;
     }
 
-    public void PilihanButton()
+    public void SettingButton()
     {
-        settingMenuPanel.SetActive(false);
-        pilihanMenuPanel.SetActive(true);
-        isPilihanMenuOpen = true;
+        settingMenuPanel.SetActive(true);
+        gameUIPanel.SetActive(false);
+        isSettingMenuOpen = true;
         Time.timeScale = 0f;
     }
 
-    public void BackButtonPilihanMenu()
+    public void BackButtonSetting()
     {
-        pilihanMenuPanel.SetActive(false);
-        settingMenuPanel.SetActive(true);
-        isPilihanMenuOpen = false;
+        gameUIPanel.SetActive(true);
+        settingMenuPanel.SetActive(false);
+        isSettingMenuOpen = false;
         Time.timeScale = 1f;
     }
 
