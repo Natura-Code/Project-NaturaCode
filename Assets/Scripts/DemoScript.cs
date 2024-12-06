@@ -45,4 +45,19 @@ public class DemoScript : MonoBehaviour
             Debug.Log("No item used.");
         }
     }
+
+    public void PurchaseItem(Item item)
+    {
+        bool result = inventoryManager.AddItem(item); // Menambah item ke inventory
+
+        if (result)
+        {
+            Debug.Log("Purchased item: " + item.name);
+        }
+        else
+        {
+            Debug.Log("Cannot purchase item. Inventory full!");
+        }
+    }
+
 }
