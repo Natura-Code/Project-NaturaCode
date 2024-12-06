@@ -155,7 +155,7 @@ public class JellyFishEnemy : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Boundary Collider belum diatur! Ikan tidak akan dibatasi pergerakannya.");
+            Debug.Log("Boundary Collider belum diatur! Ikan tidak akan dibatasi pergerakannya.");
         }
     }
 }

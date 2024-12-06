@@ -20,6 +20,9 @@ public class DialogManager : MonoBehaviour
     private bool isInDialog; // Track if dialog is active
     public Action onDialogEnd; // Callback for custom actions
 
+    public bool moveToNextSceneOnEnd; // Whether to move to next scene on dialog end
+    public string nextSceneName; // Name of the scene to load
+
     private void Start()
     {
         sentences = new Queue<string>();
@@ -92,6 +95,22 @@ public class DialogManager : MonoBehaviour
 
         // Call the callback function if it exists
         onDialogEnd?.Invoke();
+
+        // Only move to next scene if specified
+        if (moveToNextSceneOnEnd && !string.IsNullOrEmpty(nextSceneName))
+        {
+            SceneManager.LoadScene(nextSceneName);
+        }
     }
 
+    // Cancel dialog without ending it
+    public void CancelDialog()
+    {
+        if (dialogBox != null)
+        {
+            dialogBox.SetActive(false);
+        }
+
+        isInDialog = false;
+    }
 }

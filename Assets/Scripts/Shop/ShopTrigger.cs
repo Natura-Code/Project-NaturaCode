@@ -8,18 +8,26 @@ public class ShopTrigger : MonoBehaviour
 
     private bool isPlayerInRange = false;
 
-    private void OnTriggerEnter(Collider other)
+    private void Start()
     {
-        if (other.CompareTag("Player1"))
+        if (shopManager == null)
+        {
+            Debug.LogError("ShopManager is not assigned!");
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player"))
         {
             isPlayerInRange = true;
             Debug.Log("Player entered shop area. Press 'E' to open shop.");
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    private void OnTriggerExit2D(Collider2D collision)
     {
-        if (other.CompareTag("Player1"))
+        if (collision.CompareTag("Player"))
         {
             isPlayerInRange = false;
             shopManager.ToggleShop(false);
@@ -35,5 +43,3 @@ public class ShopTrigger : MonoBehaviour
         }
     }
 }
-
-

@@ -32,7 +32,7 @@ public class DialogTrigger : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            dialogManager.EndDialog();
+            dialogManager.CancelDialog(); // Hanya membatalkan dialog tanpa memicu perpindahan scene
         }
     }
 
