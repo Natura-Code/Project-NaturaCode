@@ -6,9 +6,14 @@ public class PlayerController2 : MonoBehaviour
     [SerializeField] private float speed = 5f;
     [SerializeField] private Animator anime;
 
+    [Header("SFX")]
+    [SerializeField] private AudioClip swimSFX;   
+    [SerializeField] private AudioClip stunSFX;  
+    [SerializeField] private AudioClip catchFishSFX; 
+
+    private AudioSource sfxSource;
     private Vector2 movement;
     private Rigidbody2D rb;
-
     private GoldManager goldManager;
     private bool isStunned = false;
 
@@ -16,7 +21,6 @@ public class PlayerController2 : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
 
-        // Load posisi pemain untuk scene "InGameSea" jika tersedia
         if (PlayerPrefs.HasKey("InGameSea_X") && PlayerPrefs.HasKey("InGameSea_Y"))
         {
             float x = PlayerPrefs.GetFloat("InGameSea_X");
@@ -29,6 +33,15 @@ public class PlayerController2 : MonoBehaviour
         {
             Debug.LogError("GoldManager tidak ditemukan");
         }
+
+        sfxSource = GameObject.FindGameObjectWithTag("SFX").GetComponent<AudioSource>();
+        if (sfxSource == null)
+        {
+            Debug.LogError("AudioSource tidak ditemukan pada objek dengan tag SFX.");
+        }
+
+        sfxSource.loop = true;
+        sfxSource.clip = swimSFX;
     }
 
     private void Update()
@@ -38,7 +51,7 @@ public class PlayerController2 : MonoBehaviour
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
 
-        FlipAnimation();
+        HandleAnimationAndSFX();
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -58,33 +71,38 @@ public class PlayerController2 : MonoBehaviour
             rb.velocity = Vector2.zero;
             rb.gravityScale = 10;
         }
-
     }
 
-    private void FlipAnimation()
+    private void HandleAnimationAndSFX()
     {
-        if (movement.x != 0)
+        if (movement != Vector2.zero)
         {
-            anime.SetBool("SwimX", true);
-            anime.SetBool("SwimY", false);
-            anime.SetBool("Swim", false);
+            if (!sfxSource.isPlaying) sfxSource.Play();
 
-            transform.localScale = new Vector3(movement.x < 0 ? -1 : 1, 1, 1);
-        }
-        else if (movement.y > 0)
-        {
-            anime.SetBool("Swim", true);
-            anime.SetBool("SwimX", false);
-            anime.SetBool("SwimY", false);
-        }
-        else if (movement.y < 0)
-        {
-            anime.SetBool("SwimY", true);
-            anime.SetBool("SwimX", false);
-            anime.SetBool("Swim", false);
+            if (movement.x != 0)
+            {
+                anime.SetBool("SwimX", true);
+                anime.SetBool("SwimY", false);
+                anime.SetBool("Swim", false);
+                transform.localScale = new Vector3(movement.x < 0 ? -1 : 1, 1, 1);
+            }
+            else if (movement.y > 0)
+            {
+                anime.SetBool("Swim", true);
+                anime.SetBool("SwimX", false);
+                anime.SetBool("SwimY", false);
+            }
+            else if (movement.y < 0)
+            {
+                anime.SetBool("SwimY", true);
+                anime.SetBool("SwimX", false);
+                anime.SetBool("Swim", false);
+            }
         }
         else
         {
+            sfxSource.Stop();
+
             anime.SetBool("Swim", false);
             anime.SetBool("SwimX", false);
             anime.SetBool("SwimY", false);
@@ -101,19 +119,29 @@ public class PlayerController2 : MonoBehaviour
             {
                 if (goldManager != null)
                 {
-                    goldManager.ChangeGold(10); // Tambah 10 gold
+                    goldManager.ChangeGold(10);
                 }
 
-                Destroy(obj.gameObject); // Hancurkan ikan
+                PlaySFX(catchFishSFX);
+
+                Destroy(obj.gameObject);
                 break;
             }
+        }
+    }
+
+    private void PlaySFX(AudioClip clip)
+    {
+        if (clip != null)
+        {
+            sfxSource.PlayOneShot(clip);
         }
     }
 
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, 1f); // Visual radius tangkapan
+        Gizmos.DrawWireSphere(transform.position, 1f);
     }
 
     public void Stun(float duration)
@@ -124,7 +152,10 @@ public class PlayerController2 : MonoBehaviour
     private IEnumerator StunCoroutine(float duration)
     {
         Debug.Log("Player stunned!");
+
         isStunned = true;
+
+        PlaySFX(stunSFX);
 
         yield return new WaitForSeconds(duration);
 
@@ -132,9 +163,8 @@ public class PlayerController2 : MonoBehaviour
         isStunned = false;
     }
 
-    private void OnApplicationQuit()
+    private void OnDisable()
     {
-        // Simpan posisi pemain untuk scene "InGameSea" sebelum keluar
         PlayerPrefs.SetFloat("InGameSea_X", transform.position.x);
         PlayerPrefs.SetFloat("InGameSea_Y", transform.position.y);
         PlayerPrefs.Save();

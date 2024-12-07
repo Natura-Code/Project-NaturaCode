@@ -22,8 +22,7 @@ public class JellyFishEnemy : MonoBehaviour
     private bool isFleeing = false; // Status apakah sedang menjauh
     private bool isAttacking = false; // Status apakah sedang menyerang
 
-    [Header("Boundary Settings")]
-    public BoxCollider2D boundaryCollider;
+    private BoxCollider2D boundaryCollider; // Collider batas area
 
     private void Start()
     {
@@ -34,6 +33,21 @@ public class JellyFishEnemy : MonoBehaviour
         if (player != null)
         {
             playerTransform = player.transform;
+        }
+
+        // Cari boundary berdasarkan tag
+        GameObject boundary = GameObject.FindGameObjectWithTag("Boundary");
+        if (boundary != null)
+        {
+            boundaryCollider = boundary.GetComponent<BoxCollider2D>();
+            if (boundaryCollider == null)
+            {
+                Debug.LogWarning("GameObject dengan tag 'Boundary' tidak memiliki BoxCollider2D!");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("Boundary dengan tag 'Boundary' tidak ditemukan!");
         }
 
         // Atur gerakan bebas pertama
@@ -136,6 +150,7 @@ public class JellyFishEnemy : MonoBehaviour
         isFleeing = false;
         rb.velocity = Vector2.zero;
     }
+
     void RestrictMovementWithinBoundary()
     {
         if (boundaryCollider != null)

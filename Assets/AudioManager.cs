@@ -1,19 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class AudioManager : MonoBehaviour
 {
     [Header("Source")]
-    [SerializeField] private AudioSource mainBackgroundSource; // Untuk MainBackground
-    [SerializeField] private AudioSource musicSource;          // Untuk musik per scene
-    [SerializeField] private AudioSource SFXSource;            // Untuk efek suara (opsional)
+    [SerializeField] private AudioSource mainBackgroundSource; 
+    [SerializeField] private AudioSource musicSource;
+    [SerializeField] private AudioSource SFXSource;
 
     [Header("Clip")]
-    public AudioClip mainBackgroundClip;       // Musik utama (MainBackground)
-    public AudioClip backgroundInGame;         // Musik khusus untuk scene InGame
-    public AudioClip backgroundInGame2;        // Musik khusus untuk scene InGameSea
+    public AudioClip MainMenuSound;      // Musik untuk MainMenu
+    public AudioClip mainBackgroundClip; // Musik utama yang diputar di semua scene selain MainMenu
+    public AudioClip backgroundInGame;   // Musik tambahan untuk scene InGame
+    public AudioClip backgroundInGame2;  // Musik tambahan untuk scene InGameSea
 
     private void Awake()
     {
@@ -24,54 +23,72 @@ public class AudioManager : MonoBehaviour
             return;
         }
 
-        DontDestroyOnLoad(gameObject); // Pertahankan AudioManager di semua scene
+        DontDestroyOnLoad(gameObject); // Jangan hancurkan saat berpindah scene
     }
 
     private void Start()
     {
-        // Mainkan MainBackground saat game dimulai
-        mainBackgroundSource.clip = mainBackgroundClip;
-        mainBackgroundSource.loop = true;
-        if (!mainBackgroundSource.isPlaying) mainBackgroundSource.Play();
-
-        // Mainkan musik awal sesuai dengan scene pertama
+        // Atur musik berdasarkan scene saat ini
         UpdateSceneMusic(SceneManager.GetActiveScene().name);
-        SceneManager.sceneLoaded += OnSceneLoaded; // Listener untuk event sceneLoaded
+
+        // Menambahkan handler untuk event saat scene dimuat
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     private void OnDestroy()
     {
-        SceneManager.sceneLoaded -= OnSceneLoaded; // Lepas listener saat AudioManager dihancurkan
+        // Hapus handler event saat objek dihancurkan
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
-    // Callback untuk event sceneLoaded
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        UpdateSceneMusic(scene.name); // Perbarui musik berdasarkan nama scene
+        // Perbarui musik setiap kali scene baru dimuat
+        UpdateSceneMusic(scene.name);
     }
 
-    // Metode untuk mengganti musik berdasarkan nama scene
     private void UpdateSceneMusic(string sceneName)
     {
+        // Hentikan semua audio sebelum memperbarui
+        mainBackgroundSource.Stop();
+        musicSource.Stop();
+
         switch (sceneName)
         {
+            case "MainMenu":
+                // Putar hanya MainMenuSound
+                mainBackgroundSource.clip = MainMenuSound;
+                mainBackgroundSource.loop = true;
+                mainBackgroundSource.Play();
+                break;
+
             case "InGame":
+                // Putar mainBackgroundClip dan backgroundInGame
+                mainBackgroundSource.clip = mainBackgroundClip;
+                mainBackgroundSource.loop = true;
+                mainBackgroundSource.Play();
+
                 musicSource.clip = backgroundInGame;
+                musicSource.loop = true;
+                musicSource.Play();
                 break;
 
             case "InGameSea":
+                // Putar mainBackgroundClip dan backgroundInGame2
+                mainBackgroundSource.clip = mainBackgroundClip;
+                mainBackgroundSource.loop = true;
+                mainBackgroundSource.Play();
+
                 musicSource.clip = backgroundInGame2;
+                musicSource.loop = true;
+                musicSource.Play();
                 break;
 
             default:
+                // Tidak ada musik untuk scene lain
+                mainBackgroundSource.clip = null;
                 musicSource.clip = null;
                 break;
-        }
-
-        if (musicSource.clip != null)
-        {
-            musicSource.loop = true;
-            musicSource.Play();
         }
     }
 }
