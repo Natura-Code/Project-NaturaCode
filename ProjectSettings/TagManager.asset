@@ -8,6 +8,13 @@ TagManager:
   - Fish
   - Player1
   - Boundary
+  - SFX
+  - Ambient
+  - Music
+  - MusicSlider
+  - AmbientSlider
+  - SFXSlider
+  - GameUI
   layers:
   - Default
   - TransparentFX
