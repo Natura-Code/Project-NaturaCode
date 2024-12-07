@@ -11,6 +11,7 @@ public class Item : ScriptableObject
 
     [Header("Only gameplay")]
     public TileBase tile;
+    public int sellValue; // Nilai jual item
     public ItemType type;
     public ActionType actionType;
 

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InventoryManager : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class InventoryManager : MonoBehaviour
     public int maxStackedItems = 4;
     public InventorySlot[] inventorySlots;
     public GameObject inventoryItemPrefab;
+    public InventorySlot slotStore; // Slot khusus untuk store
+    public Button sellButton; // Tombol sell
 
     int selectedSlot = -1;
 
@@ -27,6 +30,10 @@ public class InventoryManager : MonoBehaviour
                 AddItem(item);
             }
         }
+
+        // Inisialisasi tombol sell
+        sellButton.gameObject.SetActive(false);
+        sellButton.onClick.AddListener(SellSelectedItem);
     }
 
     private void OnDisable()
@@ -39,11 +46,14 @@ public class InventoryManager : MonoBehaviour
         if (Input.inputString != null)
         {
             bool isNumber = int.TryParse(Input.inputString, out int number);
-            if (isNumber && number > 0 && number < 6)
+            if (isNumber && number > 0 && number <= inventorySlots.Length)
             {
                 ChangeSelectedSlot(number - 1);
             }
         }
+
+        // Seleksi otomatis untuk slot store jika ada item
+        AutoSelectStoreSlot();
     }
 
     void ChangeSelectedSlot(int newValue)
@@ -54,6 +64,38 @@ public class InventoryManager : MonoBehaviour
         }
         inventorySlots[newValue].Select();
         selectedSlot = newValue;
+
+        // Cek apakah slot terpilih adalah slot store dan memiliki item
+        UpdateSellButton();
+    }
+
+    void AutoSelectStoreSlot()
+    {
+        InventoryItem itemInSlot = slotStore.GetComponentInChildren<InventoryItem>();
+        if (itemInSlot != null && selectedSlot != -2) // -2 untuk menandai slotStore
+        {
+            if (selectedSlot >= 0) inventorySlots[selectedSlot].Deselect();
+            slotStore.Select();
+            selectedSlot = -2; // Menandai bahwa slotStore sedang dipilih
+
+            UpdateSellButton();
+        }
+    }
+
+    void UpdateSellButton()
+    {
+        InventoryItem itemInSlot = null;
+
+        if (selectedSlot == -2) // Jika slotStore terpilih
+        {
+            itemInSlot = slotStore.GetComponentInChildren<InventoryItem>();
+        }
+        else if (selectedSlot >= 0)
+        {
+            itemInSlot = inventorySlots[selectedSlot].GetComponentInChildren<InventoryItem>();
+        }
+
+        sellButton.gameObject.SetActive(itemInSlot != null);
     }
 
     public bool AddItem(Item item)
@@ -96,7 +138,7 @@ public class InventoryManager : MonoBehaviour
 
     public Item GetSelectedItem(bool use)
     {
-        InventorySlot slot = inventorySlots[selectedSlot];
+        InventorySlot slot = selectedSlot == -2 ? slotStore : inventorySlots[selectedSlot];
         InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
         if (itemInSlot != null)
         {
@@ -119,6 +161,79 @@ public class InventoryManager : MonoBehaviour
         return null;
     }
 
+    void SellSelectedItem()
+    {
+        // Fokus hanya pada slotStore
+        InventoryItem itemInSlot = slotStore.GetComponentInChildren<InventoryItem>();
+
+        if (itemInSlot != null)
+        {
+            Debug.Log("Item sold: " + itemInSlot.item.name);
+
+            // Tambahkan logika penjualan (misalnya menambahkan poin atau currency)
+            FindObjectOfType<PlayerWallet>().AddMoney(itemInSlot.item.sellValue);
+
+
+            // Kurangi jumlah item atau hapus jika sudah habis
+            itemInSlot.count--;
+            if (itemInSlot.count <= 0)
+            {
+                Destroy(itemInSlot.gameObject);
+            }
+            else
+            {
+                itemInSlot.RefreshCount();
+            }
+
+            // Perbarui tombol "Sell"
+            UpdateSellButton();
+        }
+        else
+        {
+            Debug.Log("No item to sell in slot store.");
+        }
+    }
+
+
+    public bool RemoveItem(Item item)
+    {
+        for (int i = 0; i < inventorySlots.Length; i++)
+        {
+            InventorySlot slot = inventorySlots[i];
+            InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
+
+            if (itemInSlot != null && itemInSlot.item == item && itemInSlot.count > 0)
+            {
+                itemInSlot.count--;
+                itemInSlot.RefreshCount();
+
+                if (itemInSlot.count <= 0)
+                {
+                    Destroy(itemInSlot.gameObject);
+                }
+
+                return true;
+            }
+        }
+
+        // Periksa slot store
+        InventoryItem storeItem = slotStore.GetComponentInChildren<InventoryItem>();
+        if (storeItem != null && storeItem.item == item && storeItem.count > 0)
+        {
+            storeItem.count--;
+            storeItem.RefreshCount();
+
+            if (storeItem.count <= 0)
+            {
+                Destroy(storeItem.gameObject);
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
     void SaveInventory()
     {
         List<InventoryData> inventoryData = new List<InventoryData>();
@@ -133,6 +248,17 @@ public class InventoryManager : MonoBehaviour
                     count = itemInSlot.count
                 });
             }
+        }
+
+        // Simpan slot store
+        InventoryItem storeItem = slotStore.GetComponentInChildren<InventoryItem>();
+        if (storeItem != null)
+        {
+            inventoryData.Add(new InventoryData
+            {
+                itemName = storeItem.item.name,
+                count = storeItem.count
+            });
         }
 
         string json = JsonUtility.ToJson(new InventoryWrapper { inventoryList = inventoryData });
@@ -161,34 +287,6 @@ public class InventoryManager : MonoBehaviour
 
         return false;
     }
-
-
-    public bool RemoveItem(Item item)
-    {
-        for (int i = 0; i < inventorySlots.Length; i++)
-        {
-            InventorySlot slot = inventorySlots[i];
-            InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
-
-            // Jika item ditemukan dan jumlahnya lebih dari 0
-            if (itemInSlot != null && itemInSlot.item == item && itemInSlot.count > 0)
-            {
-                itemInSlot.count--;
-                itemInSlot.RefreshCount();
-
-                // Jika jumlah item 0, hapus item dari slot
-                if (itemInSlot.count <= 0)
-                {
-                    Destroy(itemInSlot.gameObject);
-                }
-
-                return true;
-            }
-        }
-        return false;
-    }
-
-
 }
 
 [System.Serializable]
