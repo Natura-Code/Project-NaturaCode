@@ -29,7 +29,7 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    private void OnApplicationQuit()
+    private void OnDisable()
     {
         SaveInventory(); 
     }
