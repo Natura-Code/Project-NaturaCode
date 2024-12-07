@@ -43,7 +43,48 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public void OnEndDrag(PointerEventData eventData)
     {
         image.raycastTarget = true;
-        transform.SetParent(parentAfterDrag);
+
+        // Cek apakah kita men-drop item ke slot yang valid
+        GameObject dropTarget = eventData.pointerEnter;
+
+        if (dropTarget != null && dropTarget.GetComponent<InventorySlot>() != null)
+        {
+            InventorySlot targetSlot = dropTarget.GetComponent<InventorySlot>();
+            InventoryItem existingItem = targetSlot.GetComponentInChildren<InventoryItem>();
+
+            // Jika slot kosong, pindahkan item
+            if (existingItem == null)
+            {
+                transform.SetParent(targetSlot.transform);
+                parentAfterDrag = targetSlot.transform;
+            }
+            // Jika ada item yang sama di slot dan masih ada ruang untuk stack
+            else if (existingItem.item == this.item && existingItem.count < InventoryManager.instance.maxStackedItems)
+            {
+                int transferAmount = Mathf.Min(count, InventoryManager.instance.maxStackedItems - existingItem.count);
+                existingItem.count += transferAmount;
+                count -= transferAmount;
+                existingItem.RefreshCount();
+                RefreshCount();
+
+                if (count <= 0)
+                {
+                    Destroy(gameObject);
+                }
+            }
+            else
+            {
+                // Jika slot tidak valid, kembalikan ke posisi semula
+                transform.SetParent(parentAfterDrag);
+            }
+        }
+        else
+        {
+            // Kembalikan ke posisi semula jika bukan slot inventaris
+            transform.SetParent(parentAfterDrag);
+        }
+
+        transform.localPosition = Vector3.zero; // Reset posisi lokal
     }
 
 }
