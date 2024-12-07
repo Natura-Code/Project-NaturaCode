@@ -70,6 +70,23 @@ public class ShopManager : MonoBehaviour
         }
     }
 
+    private void AttemptSell(Item item, int price)
+    {
+        // Cek apakah pemain memiliki item yang cukup
+        bool result = demoScript.inventoryManager.RemoveItem(item);
+
+        if (result)
+        {
+            // Tambahkan uang ke dompet pemain jika berhasil menjual
+            playerWallet.AddMoney(price);
+            Debug.Log("Item sold: " + item.name + ". Money earned: " + price);
+        }
+        else
+        {
+            Debug.Log("Cannot sell item. Not enough items in inventory!");
+        }
+    }
+
     public void ToggleShop(bool show)
     {
         shopUI.SetActive(show);

@@ -5,10 +5,10 @@ using UnityEngine;
 public class InventoryManager : MonoBehaviour
 {
     public static InventoryManager instance;
-    public Item[] starItem; 
-    public int maxStackedItems = 4; 
-    public InventorySlot[] inventorySlots; 
-    public GameObject inventoryItemPrefab; 
+    public Item[] starItem;
+    public int maxStackedItems = 4;
+    public InventorySlot[] inventorySlots;
+    public GameObject inventoryItemPrefab;
 
     int selectedSlot = -1;
 
@@ -20,7 +20,7 @@ public class InventoryManager : MonoBehaviour
     private void Start()
     {
         ChangeSelectedSlot(0);
-        if (!LoadInventory()) 
+        if (!LoadInventory())
         {
             foreach (var item in starItem)
             {
@@ -29,9 +29,9 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    private void OnApplicationQuit()
+    private void OnDisable()
     {
-        SaveInventory(); 
+        SaveInventory();
     }
 
     private void Update()
@@ -156,11 +156,38 @@ public class InventoryManager : MonoBehaviour
                 }
             }
             Debug.Log("Inventory loaded: " + json);
-            return true; 
+            return true;
         }
 
-        return false; 
+        return false;
     }
+
+
+    public bool RemoveItem(Item item)
+    {
+        for (int i = 0; i < inventorySlots.Length; i++)
+        {
+            InventorySlot slot = inventorySlots[i];
+            InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
+
+            // Jika item ditemukan dan jumlahnya lebih dari 0
+            if (itemInSlot != null && itemInSlot.item == item && itemInSlot.count > 0)
+            {
+                itemInSlot.count--;
+                itemInSlot.RefreshCount();
+
+                // Jika jumlah item 0, hapus item dari slot
+                if (itemInSlot.count <= 0)
+                {
+                    Destroy(itemInSlot.gameObject);
+                }
+
+                return true;
+            }
+        }
+        return false;
+    }
+
 
 }
 
