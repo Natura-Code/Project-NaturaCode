@@ -14,8 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   range: {x: 5, y: 4}
   tile: {fileID: 0}
-  sellValue: 50
   type: 2
   actionType: 0
+  sellValue: 50
+  isSellable: 1
+  category: 
   stackable: 0
   image: {fileID: 307846881, guid: d8b50b6696634984fab7950e2355130b, type: 3}
