@@ -13,6 +13,9 @@ public class FishAI : MonoBehaviour
     public float normalSpeed = 2f;
     public float directionChangeInterval = 2f;
 
+    [Header("Fish Data")]
+    public Item fishItem; // ScriptableObject yang berisi data ikan (Fish_blue)
+
     private BoxCollider2D boundaryCollider;
     private Vector2 targetDirection;
     private Rigidbody2D rb;
@@ -23,7 +26,7 @@ public class FishAI : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
 
-        // cari objek player secara otomatis jika belum diatur
+        // Cari objek player secara otomatis jika belum diatur
         if (player == null)
         {
             GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
@@ -37,7 +40,7 @@ public class FishAI : MonoBehaviour
             }
         }
 
-        // cari collider dengan tag "Boundary"
+        // Cari collider dengan tag "Boundary"
         GameObject boundaryObj = GameObject.FindGameObjectWithTag("Boundary");
         if (boundaryObj != null)
         {

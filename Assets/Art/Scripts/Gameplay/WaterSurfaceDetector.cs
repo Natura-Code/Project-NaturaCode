@@ -10,21 +10,25 @@ public class WaterSurfaceDetector : MonoBehaviour
     private bool isUnderwater = false;
 
     [SerializeField] private int goldCostForUpgrade = 50;
-    private GoldManager goldManager;
+    private PlayerWallet playerWallet;
     [SerializeField] private UnityEngine.UI.Slider oxygenSlider;
 
     [SerializeField] private TextMeshProUGUI warningText;
-    [SerializeField] private TextMeshProUGUI countdownText; 
-    [SerializeField] private Transform startingPoint; 
-    private bool isOxygenDepleted = false; 
-    private Coroutine oxygenDepletedCoroutine; 
+    [SerializeField] private TextMeshProUGUI countdownText;
+    [SerializeField] private Transform startingPoint;
+    private bool isOxygenDepleted = false;
+    private Coroutine oxygenDepletedCoroutine;
+
+    private const string MaxOxygenKey = "MaxOxygen"; 
 
     void Start()
     {
+        maxOxygen = PlayerPrefs.GetFloat(MaxOxygenKey, maxOxygen);
         currentOxygen = maxOxygen;
         UpdateOxygenSlider();
-        goldManager = FindObjectOfType<GoldManager>();
-        countdownText.text = ""; 
+
+        playerWallet = FindObjectOfType<PlayerWallet>();
+        countdownText.text = "";
     }
 
     void Update()
@@ -35,7 +39,7 @@ public class WaterSurfaceDetector : MonoBehaviour
             if (currentOxygen <= 0)
             {
                 currentOxygen = 0;
-                if (!isOxygenDepleted) 
+                if (!isOxygenDepleted)
                 {
                     isOxygenDepleted = true;
                     oxygenDepletedCoroutine = StartCoroutine(HandleOxygenDepletionCountdown());
@@ -53,13 +57,13 @@ public class WaterSurfaceDetector : MonoBehaviour
                 }
             }
 
-            if (isOxygenDepleted) 
+            if (isOxygenDepleted)
             {
                 isOxygenDepleted = false;
                 if (oxygenDepletedCoroutine != null)
                 {
                     StopCoroutine(oxygenDepletedCoroutine);
-                    countdownText.text = ""; 
+                    countdownText.text = "";
                 }
             }
         }
@@ -69,29 +73,38 @@ public class WaterSurfaceDetector : MonoBehaviour
 
     public void UpgradeMaxOxygen()
     {
-        if (goldManager != null && goldManager.SpendGold(goldCostForUpgrade))
+        if (playerWallet != null && playerWallet.SpendMoney(goldCostForUpgrade))
         {
             maxOxygen += 10f;
             currentOxygen = maxOxygen;
             UpdateOxygenSlider();
+
+            SaveMaxOxygen();
+
             Debug.Log("Oksigen telah ditingkatkan, Sekarang: " + maxOxygen);
             StartCoroutine(ShowWarningTemporary("Pembelian Berhasil Oksigen = " + maxOxygen, 2f));
 
-            if (isOxygenDepleted) 
+            if (isOxygenDepleted)
             {
                 isOxygenDepleted = false;
                 if (oxygenDepletedCoroutine != null)
                 {
                     StopCoroutine(oxygenDepletedCoroutine);
-                    countdownText.text = ""; 
+                    countdownText.text = "";
                 }
             }
         }
         else
         {
-            Debug.Log("Tidak cukup emas untuk peningkatan!");
-            StartCoroutine(ShowWarningTemporary("Gold tidak cukup!", 2f));
+            Debug.Log("Tidak cukup uang untuk peningkatan!");
+            StartCoroutine(ShowWarningTemporary("Uang tidak cukup!", 2f));
         }
+    }
+
+    private void SaveMaxOxygen()
+    {
+        PlayerPrefs.SetFloat(MaxOxygenKey, maxOxygen);
+        PlayerPrefs.Save(); 
     }
 
     private void UpdateOxygenSlider()
@@ -123,32 +136,32 @@ public class WaterSurfaceDetector : MonoBehaviour
 
         while (countdown > 0)
         {
-            countdownText.text = "Respawning: " + Mathf.CeilToInt(countdown); 
+            countdownText.text = "Respawning: " + Mathf.CeilToInt(countdown);
             yield return new WaitForSeconds(1f);
             countdown--;
 
-            if (!isUnderwater || !isOxygenDepleted) 
+            if (!isUnderwater || !isOxygenDepleted)
             {
-                countdownText.text = ""; 
+                countdownText.text = "";
                 yield break;
             }
         }
 
-        countdownText.text = ""; 
+        countdownText.text = "";
         transform.position = startingPoint.position;
 
-        if (goldManager != null)
+        if (playerWallet != null)
         {
-            int currentGold = goldManager.GetGold(); 
-            if (currentGold >= 100)
+            int currentMoney = playerWallet.currentMoney;
+            if (currentMoney >= 100)
             {
-                goldManager.ChangeGold(-100); 
-                Debug.Log("Kembali ke titik awal. Emas berkurang 100.");
+                playerWallet.SpendMoney(100);
+                Debug.Log("Kembali ke titik awal. Uang berkurang 100.");
             }
             else
             {
-                goldManager.ChangeGold(-currentGold); 
-                Debug.Log("Kembali ke titik awal. Semua emas habis.");
+                playerWallet.SpendMoney(currentMoney);
+                Debug.Log("Kembali ke titik awal. Semua uang habis.");
             }
         }
 

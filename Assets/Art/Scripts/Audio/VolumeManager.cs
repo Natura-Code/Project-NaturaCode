@@ -21,7 +21,6 @@ public class VolumeManager : MonoBehaviour
 
     private void Awake()
     {
-        // Singleton pattern
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -30,10 +29,8 @@ public class VolumeManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        // Subscribe to scene loaded event
         SceneManager.sceneLoaded += OnSceneLoaded;
 
-        // Find AudioSources by tag
         mainBackgroundSource = GameObject.FindWithTag("Music")?.GetComponent<AudioSource>();
         ambientSource = GameObject.FindWithTag("Ambient")?.GetComponent<AudioSource>();
         sfxSource = GameObject.FindWithTag("SFX")?.GetComponent<AudioSource>();
@@ -41,19 +38,16 @@ public class VolumeManager : MonoBehaviour
 
     private void Start()
     {
-        // Initialize sliders when the game starts
         InitializeSliders();
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        // Reinitialize sliders after scene is loaded
         InitializeSliders();
     }
 
     private void InitializeSliders()
     {
-        // Coba mencari slider jika belum terhubung di Inspector
         if (musicSlider == null)
             musicSlider = GameObject.Find("MusicSlider")?.GetComponent<Slider>();
         if (ambientSlider == null)
@@ -61,24 +55,20 @@ public class VolumeManager : MonoBehaviour
         if (sfxSlider == null)
             sfxSlider = GameObject.Find("SFXSlider")?.GetComponent<Slider>();
 
-        // Pastikan slider ditemukan
         if (musicSlider == null || ambientSlider == null || sfxSlider == null)
         {
             Debug.LogError("Slider not found! Make sure sliders are in the scene and properly connected.");
             return;
         }
 
-        // Load saved volume settings
         float savedMusicVolume = PlayerPrefs.GetFloat(MusicVolumeKey, 1f);
         float savedAmbientVolume = PlayerPrefs.GetFloat(AmbientVolumeKey, 1f);
         float savedSFXVolume = PlayerPrefs.GetFloat(SFXVolumeKey, 1f);
 
-        // Apply volumes to AudioSources
         ApplyVolume(mainBackgroundSource, savedMusicVolume);
         ApplyVolume(ambientSource, savedAmbientVolume);
         ApplyVolume(sfxSource, savedSFXVolume);
 
-        // Initialize sliders with saved volume
         if (musicSlider != null)
         {
             musicSlider.value = savedMusicVolume;
@@ -127,7 +117,6 @@ public class VolumeManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        // Unsubscribe from sceneLoaded event to prevent memory leaks
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 }
