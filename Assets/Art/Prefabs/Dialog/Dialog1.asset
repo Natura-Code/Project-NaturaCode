@@ -15,8 +15,6 @@ MonoBehaviour:
   characterName: Kapten Rana
   characterIcon: {fileID: -1658489854, guid: e5c60fa03810d424bb8ece228042e4ab, type: 3}
   dialogLines:
-  - Halo anak muda kabar
-  - Halo anak muda kabar 1
-  - "Halo anak muda kabar 2\t"
-  - Halo anak muda kabar 3
-  - Halo anak muda kabar 4
+  - Halo Decks!
+  - Kenapa Kamu kemari?
+  - Apakah Kau ingin mencari ikan ke Laut Bersama Ku
