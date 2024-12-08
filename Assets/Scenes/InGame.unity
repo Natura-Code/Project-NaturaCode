@@ -1388,6 +1388,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3086872965279443212, guid: 8b2c9f4af1aa4a740afd171105ef7ebf, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3105567726365173273, guid: 8b2c9f4af1aa4a740afd171105ef7ebf, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1396,6 +1400,14 @@ PrefabInstance:
       propertyPath: gameUIPanel
       value: 
       objectReference: {fileID: 1210393530}
+    - target: {fileID: 4004426472647491857, guid: 8b2c9f4af1aa4a740afd171105ef7ebf, type: 3}
+      propertyPath: settingPanel
+      value: 
+      objectReference: {fileID: 948032269}
+    - target: {fileID: 4951496539890846006, guid: 8b2c9f4af1aa4a740afd171105ef7ebf, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6452822452589521526, guid: 8b2c9f4af1aa4a740afd171105ef7ebf, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -1474,6 +1486,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6452822452589521526, guid: 8b2c9f4af1aa4a740afd171105ef7ebf, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6627983331921663150, guid: 8b2c9f4af1aa4a740afd171105ef7ebf, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6825052994083273951, guid: 8b2c9f4af1aa4a740afd171105ef7ebf, type: 3}
@@ -4307,6 +4323,22 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7358625866924546028, guid: fae212856e2618349a104dd71caf9760, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7358625866924546028, guid: fae212856e2618349a104dd71caf9760, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1699959779}
+    - target: {fileID: 7358625866924546028, guid: fae212856e2618349a104dd71caf9760, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OpenVolumePanel
+      objectReference: {fileID: 0}
+    - target: {fileID: 7358625866924546028, guid: fae212856e2618349a104dd71caf9760, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: VolumePanelManager, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 8064754362135658494, guid: fae212856e2618349a104dd71caf9760, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -4416,6 +4448,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 4391007662972010387, guid: fae212856e2618349a104dd71caf9760, type: 3}
+    - {fileID: 3490598805827315370, guid: fae212856e2618349a104dd71caf9760, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fae212856e2618349a104dd71caf9760, type: 3}
@@ -5111,6 +5144,17 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &1699959779 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4004426472647491857, guid: 8b2c9f4af1aa4a740afd171105ef7ebf, type: 3}
+  m_PrefabInstance: {fileID: 431928510}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2653abb39488f8b4daa9371ba23ddcdb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1737608630
 GameObject:
   m_ObjectHideFlags: 0
