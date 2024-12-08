@@ -128,12 +128,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e66cff15cba70f428a6632990d0e26e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerTag: Player1
+  player: {fileID: 0}
   fleeRadius: 3
   fleeSpeed: 4
   normalSpeed: 2
   directionChangeInterval: 2
-  boundaryCollider: {fileID: 0}
+  fishItem: {fileID: 11400000, guid: b40233c76bf150b46b30fb49f12a0d27, type: 2}
 --- !u!58 &2316787586011925339
 CircleCollider2D:
   m_ObjectHideFlags: 0

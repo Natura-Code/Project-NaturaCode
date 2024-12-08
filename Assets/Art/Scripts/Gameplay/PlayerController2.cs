@@ -5,16 +5,16 @@ public class PlayerController2 : MonoBehaviour
 {
     [SerializeField] private float speed = 5f;
     [SerializeField] private Animator anime;
+    [SerializeField] private AudioClip swimSFX;
+    [SerializeField] private AudioClip stunSFX;
+    [SerializeField] private AudioClip catchFishSFX;
 
-    [Header("SFX")]
-    [SerializeField] private AudioClip swimSFX;   
-    [SerializeField] private AudioClip stunSFX;  
-    [SerializeField] private AudioClip catchFishSFX; 
-
+    [Header("Item Management")]
+    [SerializeField] private Item fishItem; 
+    [SerializeField] private InventoryManager inventoryManager; 
     private AudioSource sfxSource;
     private Vector2 movement;
     private Rigidbody2D rb;
-    private GoldManager goldManager;
     private bool isStunned = false;
 
     private void Start()
@@ -26,12 +26,6 @@ public class PlayerController2 : MonoBehaviour
             float x = PlayerPrefs.GetFloat("InGameSea_X");
             float y = PlayerPrefs.GetFloat("InGameSea_Y");
             transform.position = new Vector3(x, y, 0);
-        }
-
-        goldManager = FindObjectOfType<GoldManager>();
-        if (goldManager == null)
-        {
-            Debug.LogError("GoldManager tidak ditemukan");
         }
 
         sfxSource = GameObject.FindGameObjectWithTag("SFX").GetComponent<AudioSource>();
@@ -111,22 +105,41 @@ public class PlayerController2 : MonoBehaviour
 
     private void TryCatchFish()
     {
-        Collider2D[] nearbyObjects = Physics2D.OverlapCircleAll(transform.position, 1f);
-
-        foreach (var obj in nearbyObjects)
+        try
         {
-            if (obj.CompareTag("Fish"))
+            Collider2D[] nearbyObjects = Physics2D.OverlapCircleAll(transform.position, 1f);
+
+            foreach (var obj in nearbyObjects)
             {
-                if (goldManager != null)
+                if (obj.CompareTag("Fish"))
                 {
-                    goldManager.ChangeGold(10);
+                    if (inventoryManager != null && fishItem != null)
+                    {
+                        bool added = inventoryManager.AddItem(fishItem);
+
+                        if (added)
+                        {
+                            Debug.Log("Item added: " + fishItem.name);
+                            PlaySFX(catchFishSFX);
+                            Destroy(obj.gameObject); 
+                        }
+                        else
+                        {
+                            Debug.Log("Inventory full! Cannot add item: " + fishItem.name);
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogError("InventoryManager atau fishItem belum diatur.");
+                    }
+
+                    break;
                 }
-
-                PlaySFX(catchFishSFX);
-
-                Destroy(obj.gameObject);
-                break;
             }
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError("Error saat mencoba menangkap ikan: " + ex.Message);
         }
     }
 
@@ -138,28 +151,21 @@ public class PlayerController2 : MonoBehaviour
         }
     }
 
-    private void OnDrawGizmosSelected()
+    public void Stun(float stunDuration)
     {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, 1f);
-    }
-
-    public void Stun(float duration)
-    {
-        StartCoroutine(StunCoroutine(duration));
+        if (!isStunned)
+        {
+            StartCoroutine(StunCoroutine(stunDuration));
+        }
     }
 
     private IEnumerator StunCoroutine(float duration)
     {
-        Debug.Log("Player stunned!");
-
         isStunned = true;
-
         PlaySFX(stunSFX);
 
         yield return new WaitForSeconds(duration);
 
-        Debug.Log("Player recovered from stun.");
         isStunned = false;
     }
 
