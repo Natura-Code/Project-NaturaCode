@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class VolumePanelManager : MonoBehaviour
 {
-    //[SerializeField] private GameObject gameUIPanel; // Panel utama UI game
+    [SerializeField] private GameObject settingPanel; // Panel utama UI game
     [SerializeField] private GameObject volumePanel; // Panel pengaturan volume
 
     private bool isVolumePanelOpen = false;
@@ -13,26 +13,39 @@ public class VolumePanelManager : MonoBehaviour
         {
             if (isVolumePanelOpen)
             {
-                CloseVolumePanel();
+                CloseVolumePanelWithKey();
             }
             else
             {
-                OpenVolumePanel();
+                OpenVolumePanelWithKey();
             }
         }
     }
 
+    public void OpenVolumePanelWithKey()
+    {
+        volumePanel.SetActive(true);
+        isVolumePanelOpen = true;
+        Time.timeScale = 0f;
+    }
+
+    public void CloseVolumePanelWithKey()
+    {
+        volumePanel.SetActive(false);
+        isVolumePanelOpen = false;
+        Time.timeScale = 1f;
+    }
     public void OpenVolumePanel()
     {
         volumePanel.SetActive(true);
-        //gameUIPanel.SetActive(false);
+        settingPanel.SetActive(false);
         isVolumePanelOpen = true;
         Time.timeScale = 0f;
     }
 
     public void CloseVolumePanel()
     {
-        //gameUIPanel.SetActive(true);
+        settingPanel.SetActive(true);
         volumePanel.SetActive(false);
         isVolumePanelOpen = false;
         Time.timeScale = 1f;
