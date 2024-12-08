@@ -134,7 +134,7 @@ MonoBehaviour:
   fleeSpeed: 4
   normalSpeed: 2
   directionChangeInterval: 2
-  fishItem: {fileID: 11400000, guid: f4fcb0bb9daaf444fa45d85807575b10, type: 2}
+  fishItem: {fileID: 11400000, guid: b40233c76bf150b46b30fb49f12a0d27, type: 2}
 --- !u!58 &2316787586011925339
 CircleCollider2D:
   m_ObjectHideFlags: 0
