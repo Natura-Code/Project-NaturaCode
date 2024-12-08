@@ -22476,7 +22476,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5793380659033574164, guid: fae212856e2618349a104dd71caf9760, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6083159263776101835, guid: fae212856e2618349a104dd71caf9760, type: 3}
       propertyPath: m_Type
@@ -22884,7 +22884,7 @@ MonoBehaviour:
   swimSFX: {fileID: 8300000, guid: 8b396d336bcc6734ea843497342e0a03, type: 3}
   stunSFX: {fileID: 8300000, guid: 1a80c0c9e2af337428b76e9e015bfdaf, type: 3}
   catchFishSFX: {fileID: 8300000, guid: 03210406de4823e4a89d858a682d5a26, type: 3}
-  fishItem: {fileID: 11400000, guid: d9e28731d21f79e44a8f0087cdf88ca6, type: 2}
+  fishItem: {fileID: 11400000, guid: b40233c76bf150b46b30fb49f12a0d27, type: 2}
   inventoryManager: {fileID: 1175831769}
 --- !u!95 &2097921272
 Animator:
