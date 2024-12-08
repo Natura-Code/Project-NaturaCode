@@ -2653,6 +2653,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: ChangeGold
       objectReference: {fileID: 0}
+    - target: {fileID: 3490598805827315370, guid: fae212856e2618349a104dd71caf9760, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4391007662972010387, guid: fae212856e2618349a104dd71caf9760, type: 3}
       propertyPath: m_IsActive
       value: 0
