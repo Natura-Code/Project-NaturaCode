@@ -23617,6 +23617,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1012803399446609507, guid: 4ccb3a053f7d2a145a834bd10ac23a5d, type: 3}
+      propertyPath: m_BodyType
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1361535027038117196, guid: 4ccb3a053f7d2a145a834bd10ac23a5d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.3899999
@@ -23660,6 +23664,10 @@ PrefabInstance:
     - target: {fileID: 2437933247130370791, guid: 4ccb3a053f7d2a145a834bd10ac23a5d, type: 3}
       propertyPath: m_Name
       value: Ikan Biru
+      objectReference: {fileID: 0}
+    - target: {fileID: 2880035459056173077, guid: 4ccb3a053f7d2a145a834bd10ac23a5d, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -23748,6 +23756,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 565141158497405921, guid: 3e6886d9ecda53c46a14f14b9bf77aef, type: 3}
+      propertyPath: m_BodyType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 565141158497405921, guid: 3e6886d9ecda53c46a14f14b9bf77aef, type: 3}
       propertyPath: m_Interpolate
       value: 0
       objectReference: {fileID: 0}
@@ -23809,7 +23821,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5927633324199109962, guid: 3e6886d9ecda53c46a14f14b9bf77aef, type: 3}
       propertyPath: m_IsTrigger
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8601948022057900796, guid: 3e6886d9ecda53c46a14f14b9bf77aef, type: 3}
       propertyPath: m_Name
@@ -23935,6 +23947,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 66910215193609408, guid: 8b4352d697c458b4eb15980ee1f77c30, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 104218111732204345, guid: 8b4352d697c458b4eb15980ee1f77c30, type: 3}
+      propertyPath: m_BodyType
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 364026259688501792, guid: 8b4352d697c458b4eb15980ee1f77c30, type: 3}
       propertyPath: m_Name
       value: Ikan Nemo
@@ -24030,6 +24050,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2284128313821721037, guid: 141866803c2ccfc4eb64eab346bbeb66, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7306309321520800742, guid: 141866803c2ccfc4eb64eab346bbeb66, type: 3}
+      propertyPath: m_BodyType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8126222545771189429, guid: 141866803c2ccfc4eb64eab346bbeb66, type: 3}
+      propertyPath: m_IsTrigger
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8706930972187711750, guid: 141866803c2ccfc4eb64eab346bbeb66, type: 3}

@@ -10,8 +10,8 @@ public class PlayerController2 : MonoBehaviour
     [SerializeField] private AudioClip catchFishSFX;
 
     [Header("Item Management")]
-    [SerializeField] private Item fishItem; 
-    [SerializeField] private InventoryManager inventoryManager; 
+    [SerializeField] private Item fishItem;
+    [SerializeField] private InventoryManager inventoryManager;
     private AudioSource sfxSource;
     private Vector2 movement;
     private Rigidbody2D rb;
@@ -121,7 +121,7 @@ public class PlayerController2 : MonoBehaviour
                         {
                             Debug.Log("Item added: " + fishItem.name);
                             PlaySFX(catchFishSFX);
-                            Destroy(obj.gameObject); 
+                            Destroy(obj.gameObject);
                         }
                         else
                         {
