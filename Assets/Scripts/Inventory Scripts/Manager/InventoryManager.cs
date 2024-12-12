@@ -168,16 +168,11 @@ public class InventoryManager : MonoBehaviour
 
         if (itemInSlot != null)
         {
-            if (!itemInSlot.item.isSellable)
-            {
-                Debug.Log("Item cannot be sold: " + itemInSlot.item.name);
-                return; // Keluar jika item tidak bisa dijual
-            }
-
             Debug.Log("Item sold: " + itemInSlot.item.name);
 
             // Tambahkan logika penjualan (misalnya menambahkan poin atau currency)
             FindObjectOfType<PlayerWallet>().AddMoney(itemInSlot.item.sellValue);
+
 
             // Kurangi jumlah item atau hapus jika sudah habis
             itemInSlot.count--;
@@ -198,7 +193,6 @@ public class InventoryManager : MonoBehaviour
             Debug.Log("No item to sell in slot store.");
         }
     }
-
 
 
     public bool RemoveItem(Item item)
